@@ -1,0 +1,2 @@
+# ITChamps dependencies
+# Frappe is installed by the bench, so we don't list it here
