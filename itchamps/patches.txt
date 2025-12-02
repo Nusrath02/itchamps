@@ -1,0 +1,2 @@
+﻿# Patches for itchamps
+# Format: module.path.to.patch.file
