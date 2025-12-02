@@ -1,0 +1,11 @@
+include README.md
+include license.txt
+include pyproject.toml
+recursive-include itchamps *.py
+recursive-include itchamps *.js
+recursive-include itchamps *.css
+recursive-include itchamps *.html
+recursive-include itchamps *.json
+recursive-include itchamps *.md
+recursive-include itchamps *.txt
+recursive-include itchamps/public *

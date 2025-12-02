@@ -4,13 +4,18 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "itchamps"
+version = "0.0.1"
+description = "ITChamps HR Management with AI Chatbot"
 authors = [
-    {name = "Your Company", email = "info@itchamps.com"}
+    {name = "ITChamps", email = "info@itchamps.com"}
 ]
-dynamic = ["version", "description"]
 readme = "README.md"
 license = {file = "license.txt"}
 requires-python = ">=3.10"
 dependencies = [
     "frappe"
 ]
+
+[project.urls]
+Homepage = "https://github.com/Nusrath02/itchamps"
+Repository = "https://github.com/Nusrath02/itchamps.git"
