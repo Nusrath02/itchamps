@@ -473,6 +473,7 @@ header.navbar.navbar-expand {
         position: fixed;
         left: -280px;
         transition: left 0.3s ease;
+        background: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
         z-index: 1000;
     }
     
