@@ -102,7 +102,7 @@ header.navbar.navbar-expand {
 .navbar .search-bar input {
     border: 2px solid #ccd0e8;
     border-radius: 20px;
-    padding: 0.5rem 1rem;
+    /* padding: 0.5rem 1rem; */
     background: white;
     transition: all 0.3s ease;
 }
@@ -116,7 +116,7 @@ header.navbar.navbar-expand {
    SIDEBAR STYLING
    ============================================ */
 .layout-side-section {
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #4facfe 100%) !important;
+    background: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
     color: white !important;
     box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
 }
@@ -173,14 +173,6 @@ header.navbar.navbar-expand {
     padding: 2rem;
 }
 
-.page-head {
-    background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    border-left: 4px solid #1e3c72;
-}
 
 .page-title {
     color: #21417b !important;
