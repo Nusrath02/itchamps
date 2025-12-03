@@ -1,5 +1,4 @@
-// ITChamps AI Chatbot - Frontend
-// Initialize chatbot on page load
+// ITChamps AI Chatbot - Frontend (Enhanced Version)
 (function() {
     // Prevent double initialization
     if (window.itchampsChatlbotInitialized) return;
@@ -9,7 +8,6 @@
 
     // Remove any existing chatbot buttons from other apps
     setTimeout(function() {
-        // Hide/remove other chatbot elements
         const existingBots = document.querySelectorAll('[class*="chatbot"], [id*="chatbot"], .widget-chatbot');
         existingBots.forEach(function(bot) {
             if (!bot.id || !bot.id.includes('itchamps')) {
@@ -18,7 +16,7 @@
         });
     }, 2000);
 
-    // Add CSS styles
+    // Add CSS styles (ENHANCED)
     const style = document.createElement('style');
     style.innerHTML = `
         /* Chatbot Dropdown Container */
@@ -149,7 +147,7 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
         
-        /* Markdown Styling */
+        /* Enhanced Markdown Styling */
         .msg-bubble h1,
         .msg-bubble h2 {
             font-size: 18px;
@@ -158,6 +156,11 @@
             margin: 16px 0 12px 0;
             padding-bottom: 8px;
             border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .msg-bubble h1:first-child,
+        .msg-bubble h2:first-child {
+            margin-top: 0;
         }
         
         .msg-bubble h3 {
@@ -197,6 +200,40 @@
             font-family: 'Courier New', monospace;
             font-size: 13px;
             color: #e53e3e;
+        }
+        
+        .msg-bubble pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 12px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 12px 0;
+        }
+        
+        .msg-bubble pre code {
+            background: none;
+            border: none;
+            color: #e2e8f0;
+            padding: 0;
+        }
+        
+        .msg-bubble a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .msg-bubble a:hover {
+            text-decoration: underline;
+        }
+        
+        .msg-bubble blockquote {
+            border-left: 4px solid #667eea;
+            padding-left: 16px;
+            margin: 12px 0;
+            color: #4a5568;
+            font-style: italic;
         }
         
         .chatbot-input-area {
@@ -240,6 +277,10 @@
         .chatbot-input-area button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+        
+        .chatbot-input-area button:active {
+            transform: translateY(0);
         }
         
         /* Floating chatbot button */
@@ -312,27 +353,55 @@
     `;
     document.head.appendChild(style);
 
-    // Simple markdown parser
+    // ENHANCED Markdown parser with all features
     function parseMarkdown(text) {
+        // Escape HTML first
         text = text.replace(/&/g, '&amp;')
                    .replace(/</g, '&lt;')
                    .replace(/>/g, '&gt;');
         
+        // Headers
         text = text.replace(/^### (.*$)/gim, '<h3>$1</h3>');
         text = text.replace(/^## (.*$)/gim, '<h2>$1</h2>');
         text = text.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+        
+        // Bold
         text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+        
+        // Code blocks (before inline code)
+        text = text.replace(/```([^`]+)```/g, '<pre><code>$1</code></pre>');
+        
+        // Inline code
+        text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+        
+        // Links
+        text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+        
+        // Lists
         text = text.replace(/^\* (.+)$/gim, '<li>$1</li>');
         text = text.replace(/^- (.+)$/gim, '<li>$1</li>');
+        text = text.replace(/^\d+\. (.+)$/gim, '<li>$1</li>');
+        
+        // Wrap lists
         text = text.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
-        text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+        
+        // Blockquotes
+        text = text.replace(/^&gt; (.+)$/gim, '<blockquote>$1</blockquote>');
+        
+        // Paragraphs
         text = text.replace(/\n\n/g, '</p><p>');
         text = '<p>' + text + '</p>';
+        
+        // Clean up empty paragraphs
         text = text.replace(/<p><\/p>/g, '');
         text = text.replace(/<p>(<h[123]>)/g, '$1');
         text = text.replace(/(<\/h[123]>)<\/p>/g, '$1');
         text = text.replace(/<p>(<ul>)/g, '$1');
         text = text.replace(/(<\/ul>)<\/p>/g, '$1');
+        text = text.replace(/<p>(<pre>)/g, '$1');
+        text = text.replace(/(<\/pre>)<\/p>/g, '$1');
+        text = text.replace(/<p>(<blockquote>)/g, '$1');
+        text = text.replace(/(<\/blockquote>)<\/p>/g, '$1');
         
         return text;
     }
@@ -347,20 +416,16 @@
                     <span>🤖</span>
                     <span>ITChamps AI Assistant</span>
                 </div>
-                <button class="chatbot-close-btn" id="itchampsChatlbotCloseBtn">×</button>
+                <button class="chatbot-close-btn" id="itchampsChatlbotCloseBtn" title="Close and Clear Chat">×</button>
             </div>
-            <div class="chatbot-messages" id="itchampsChatlbotMessages">
-                <div class="chat-msg bot">
-                    <div class="msg-bubble">👋 Hi! I'm your ITChamps AI assistant. How can I help you today?</div>
-                </div>
-            </div>
+            <div class="chatbot-messages" id="itchampsChatlbotMessages"></div>
             <div class="chatbot-input-area">
                 <input type="text" id="itchampsChatlbotInput" placeholder="Ask me anything..." />
                 <button id="itchampsChatlbotSendBtn">Send</button>
             </div>
         </div>
 
-        <div class="chatbot-float-btn" id="itchampsChatlbotFloatBtn" style="z-index: 10000 !important;">
+        <div class="chatbot-float-btn" id="itchampsChatlbotFloatBtn" style="z-index: 10000 !important;" title="Open ITChamps AI Assistant">
             🤖
         </div>
     `;
@@ -379,10 +444,31 @@
     const sendBtn = document.getElementById('itchampsChatlbotSendBtn');
     const messages = document.getElementById('itchampsChatlbotMessages');
 
+    // NEW: Render initial welcome messages
+    function renderInitialMessages() {
+        if (!messages) return;
+        
+        const introMessages = [
+            "👋 Hi! I'm your **ITChamps AI Assistant**. How can I help you today?",
+            "I can help you with:\n\n- **Leave Management**: Check leave balance, apply for leaves\n- **Employee Information**: Find colleagues, check reporting structure\n- **HR Queries**: Company policies, benefits, payroll\n- **General Questions**: Ask me anything!\n\nTry asking: *\"Show my leave balance\"* or *\"Who is my reporting manager?\"*"
+        ];
+
+        messages.innerHTML = introMessages.map((text) => `
+            <div class="chat-msg bot">
+                <div class="msg-bubble">${parseMarkdown(text)}</div>
+            </div>
+        `).join('');
+    }
+
+    // Initialize with welcome messages
+    renderInitialMessages();
+
     // Send message function
     window.sendMessage = async function() {
         const userMsg = input.value.trim();
         if (!userMsg) return;
+
+        console.log('Sending message:', userMsg);
 
         const escapedMsg = userMsg.replace(/&/g, '&amp;')
                                   .replace(/</g, '&lt;')
@@ -429,31 +515,62 @@
             const loading = document.getElementById('itchampsChatlbotLoading');
             if (loading) loading.remove();
             
+            const errorMsg = error.message.replace(/&/g, '&amp;')
+                                         .replace(/</g, '&lt;')
+                                         .replace(/>/g, '&gt;');
+            
             messages.innerHTML += `
                 <div class="chat-msg bot">
-                    <div class="msg-bubble" style="color: #e53e3e;">
-                        ⚠️ Error: ${error.message}
+                    <div class="msg-bubble" style="color: #e53e3e; border-color: #feb2b2;">
+                        ⚠️ <strong>Error:</strong> ${errorMsg}
                     </div>
                 </div>
             `;
+            console.error('Chatbot error:', error);
         }
 
         messages.scrollTop = messages.scrollHeight;
         input.focus();
     };
 
+    // NEW: Open chatbot (just show)
+    window.openChatbot = function() {
+        dropdown.classList.add('active');
+        overlay.classList.add('active');
+        setTimeout(() => input && input.focus(), 100);
+        console.log('Chatbot opened');
+    };
+
+    // NEW: Close chatbot (just hide, keep history)
+    window.closeChatbot = function() {
+        dropdown.classList.remove('active');
+        overlay.classList.remove('active');
+        console.log('Chatbot closed');
+    };
+
+    // NEW: Close and clear chatbot (for X button)
+    window.closeChatbotAndClear = function() {
+        dropdown.classList.remove('active');
+        overlay.classList.remove('active');
+        
+        // Clear chat messages and restore welcome message
+        renderInitialMessages();
+        
+        console.log('Chatbot closed and cleared');
+    };
+
     // Toggle chatbot
     window.toggleChatbot = function() {
-        dropdown.classList.toggle('active');
-        overlay.classList.toggle('active');
         if (dropdown.classList.contains('active')) {
-            setTimeout(() => input && input.focus(), 100);
+            closeChatbot();  // Just hide, don't clear
+        } else {
+            openChatbot();
         }
     };
 
-    // Event listeners
-    if (closeBtn) closeBtn.onclick = toggleChatbot;
-    if (overlay) overlay.onclick = toggleChatbot;
+    // Event listeners - UPDATED
+    if (closeBtn) closeBtn.onclick = closeChatbotAndClear;  // X button clears chat
+    if (overlay) overlay.onclick = closeChatbot;  // Overlay click just hides
     if (floatBtn) floatBtn.onclick = toggleChatbot;
     if (sendBtn) sendBtn.onclick = sendMessage;
     
@@ -463,10 +580,10 @@
         });
     }
 
-    // Close on Escape
+    // Close on Escape (just hide, don't clear)
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && dropdown.classList.contains('active')) {
-            toggleChatbot();
+            closeChatbot();
         }
     });
 
@@ -494,6 +611,8 @@
 
         li.appendChild(a);
         navbar.insertBefore(li, navbar.firstChild);
+        
+        console.log('Navbar icon added');
     }
 
     if (document.readyState === 'loading') {
