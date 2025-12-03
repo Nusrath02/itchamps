@@ -23,16 +23,17 @@
         .chatbot-dropdown {
             display: none;
             position: fixed;
-            top: 60px;
-            right: 20px;
-            width: 450px;
-            max-width: 95vw;
-            height: 650px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 680px;
+            max-width: 90vw;
+            height: 600px;
             max-height: 85vh;
             background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
-            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid #e5e7eb;
             z-index: 9999;
             flex-direction: column;
             overflow: hidden;
@@ -55,8 +56,8 @@
         }
         
         .chatbot-header {
-            background: linear-gradient(135deg, rgb(30, 60, 114) 0%, rgb(42, 82, 152) 50%, rgb(79, 172, 254) 100%) !important;
-            padding: 20px;
+            background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%) !important;
+            padding: 16px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -65,11 +66,16 @@
             color: white;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
-        
+
         .chatbot-header-title {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            font-size: 20px;
+        }
+
+        .chatbot-header-title .chatbot-icon {
+            font-size: 28px;
         }
         
         .chatbot-close-btn {
@@ -94,9 +100,9 @@
         
         .chatbot-messages {
             flex: 1;
-            padding: 20px;
+            padding: 24px;
             overflow-y: auto;
-            background: #f8f9fa;
+            background: #f3f4f6;
         }
         
         .chatbot-messages::-webkit-scrollbar {
@@ -109,16 +115,16 @@
         }
         
         .chat-msg {
-            margin-bottom: 28px;
+            margin-bottom: 20px;
             animation: fadeIn 0.3s ease-in;
             clear: both;
         }
-        
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
+
         .chat-msg.user .msg-bubble {
             background: linear-gradient(135deg, rgb(30, 60, 114) 0%, rgb(42, 82, 152) 50%, rgb(79, 172, 254) 100%) !important;
             color: white;
@@ -132,19 +138,19 @@
             line-height: 1.5;
             box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
         }
-        
+
         .chat-msg.bot .msg-bubble {
             background: white;
-            color: #2d3748;
+            color: #374151;
             display: inline-block;
-            padding: 16px;
-            border-radius: 18px 18px 18px 4px;
+            padding: 16px 20px;
+            border-radius: 20px;
             max-width: 85%;
             word-wrap: break-word;
-            border: 1px solid #e2e8f0;
+            border: none;
             font-size: 15px;
             line-height: 1.6;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
         
         /* Enhanced Markdown Styling */
@@ -238,47 +244,53 @@
         
         .chatbot-input-area {
             display: flex;
-            padding: 16px;
+            padding: 20px;
             background: white;
-            border-top: 1px solid #e2e8f0;
-            gap: 10px;
+            border-top: 1px solid #e5e7eb;
+            gap: 12px;
+            align-items: center;
         }
-        
+
         .chatbot-input-area input {
             flex: 1;
-            border: 2px solid #e2e8f0;
+            border: 2px solid #d1d5db;
             outline: none;
-            background: #f7fafc;
-            color: #2d3748;
-            padding: 12px 16px;
-            border-radius: 24px;
+            background: white;
+            color: #374151;
+            padding: 14px 20px;
+            border-radius: 28px;
             font-size: 15px;
             transition: all 0.2s;
         }
-        
-        .chatbot-input-area input:focus {
-            border-color: #667eea;
-            background: white;
+
+        .chatbot-input-area input::placeholder {
+            color: #9ca3af;
         }
-        
+
+        .chatbot-input-area input:focus {
+            border-color: #3b82f6;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
         .chatbot-input-area button {
-            background: linear-gradient(135deg, rgb(30, 60, 114) 0%, rgb(42, 82, 152) 50%, rgb(79, 172, 254) 100%) !important;
+            background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%) !important;
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 24px;
+            padding: 14px 32px;
+            border-radius: 28px;
             cursor: pointer;
             transition: all 0.2s;
             font-weight: 600;
             font-size: 15px;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
         }
-        
+
         .chatbot-input-area button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
         }
-        
+
         .chatbot-input-area button:active {
             transform: translateY(0);
         }
@@ -290,21 +302,21 @@
             right: 30px;
             width: 64px;
             height: 64px;
-            background: linear-gradient(135deg, rgb(30, 60, 114) 0%, rgb(42, 82, 152) 50%, rgb(79, 172, 254) 100%) !important;
+            background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%) !important;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
             z-index: 9998;
             font-size: 32px;
             transition: all 0.3s ease;
         }
-        
+
         .chatbot-float-btn:hover {
             transform: scale(1.1);
-            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.5);
+            box-shadow: 0 12px 32px rgba(37, 99, 235, 0.5);
         }
         
         /* Overlay */
@@ -316,9 +328,10 @@
             width: 100%;
             height: 100%;
             z-index: 9998;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
         }
-        
+
         .chatbot-overlay.active {
             display: block;
         }
@@ -413,8 +426,8 @@
         <div class="chatbot-dropdown" id="itchampsChatlbotDropdown">
             <div class="chatbot-header">
                 <div class="chatbot-header-title">
-                    <span>🤖</span>
-                    <span>ITChamps AI Assistant</span>
+                    <span class="chatbot-icon">🤖</span>
+                    <span>AI Assistant</span>
                 </div>
                 <button class="chatbot-close-btn" id="itchampsChatlbotCloseBtn" title="Close and Clear Chat">×</button>
             </div>
@@ -447,17 +460,14 @@
     // NEW: Render initial welcome messages
     function renderInitialMessages() {
         if (!messages) return;
-        
-        const introMessages = [
-            "👋 Hi! I'm your **ITChamps AI Assistant**. How can I help you today?",
-            "I can help you with:\n\n- **Leave Management**: Check leave balance, apply for leaves\n- **Employee Information**: Find colleagues, check reporting structure\n- **HR Queries**: Company policies, benefits, payroll\n- **General Questions**: Ask me anything!\n\nTry asking: *\"Show my leave balance\"* or *\"Who is my reporting manager?\"*"
-        ];
 
-        messages.innerHTML = introMessages.map((text) => `
+        const introMessage = "👋 Hi! I'm your AI assistant. How can I help you today?";
+
+        messages.innerHTML = `
             <div class="chat-msg bot">
-                <div class="msg-bubble">${parseMarkdown(text)}</div>
+                <div class="msg-bubble">${introMessage}</div>
             </div>
-        `).join('');
+        `;
     }
 
     // Initialize with welcome messages
