@@ -247,7 +247,7 @@ header.navbar.navbar-expand {
    BUTTONS
    ============================================ */
 .btn-primary {
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #4facfe 100%) !important;
+    background: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
     border: none !important;
     color: white !important;
     font-weight: 600;
