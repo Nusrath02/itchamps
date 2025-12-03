@@ -41,6 +41,7 @@
     background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%) !important;
     padding: 16px 20px;
     display: flex;
+    flex-shrink: 0;
     align-items: center;
     justify-content: space-between;
     font-weight: 600;
@@ -82,10 +83,11 @@
 
 /* Messages Area */
 .chatbot-messages {
-    flex: 1;
+    flex: 1 1 auto;
     padding: 24px;
     overflow-y: auto;
     background: #f3f4f6;
+    min-height: 0;
 }
 
 .chatbot-messages::-webkit-scrollbar {
@@ -235,6 +237,7 @@
 /* Input Area */
 .chatbot-input-area {
     display: flex;
+    flex-shrink: 0;
     padding: 20px;
     background: white;
     border-top: 1px solid #e5e7eb;
