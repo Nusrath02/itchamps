@@ -100,9 +100,6 @@ header.navbar.navbar-expand {
 
 /* Search bar in navbar */
 .navbar .search-bar input {
-    border: 2px solid #ccd0e8;
-    border-radius: 20px;
-    /* padding: 0.5rem 1rem; */
     background: white;
     transition: all 0.3s ease;
 }
@@ -110,6 +107,12 @@ header.navbar.navbar-expand {
 .navbar .search-bar input:focus {
     border-color: #4facfe;
     box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.2);
+}
+.search-bar .awesomplete ul {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    /* border-radius: 0 0 var(--border-radius) var(--border-radius); */
+    box-shadow: var(--awesomebar-shadow);
 }
 
 /* ============================================
@@ -510,21 +513,7 @@ header.navbar.navbar-expand {
     }
 }
 
-@media (max-width: 480px) {
-    .page-head {
-        padding: 1rem;
-    }
-    
-    .widget-head,
-    .widget-title {
-        padding: 0.75rem 1rem;
-        font-size: 1rem;
-    }
-    
-    .widget-body {
-        padding: 1rem;
-    }
-}
+
 
 /* ============================================
    UTILITY CLASSES
