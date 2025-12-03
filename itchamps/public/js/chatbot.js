@@ -482,7 +482,7 @@
 
         try {
             const response = await frappe.call({
-                method: 'business_theme_v14.business_theme_v14.chatbot_api.get_response',
+                method: 'itchamps.api.chatbot.get_response',
                 args: { message: userMsg }
             });
 
