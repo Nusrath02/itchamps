@@ -2,8 +2,32 @@
 /* Professional Blue Gradient Theme for Frappe/ERPNext */
 
 /* ============================================
-   NAVBAR STYLING
+   CRITICAL: Force navbar gradient override
    ============================================ */
+html body header.navbar,
+html body .navbar.navbar-expand,
+html body nav.navbar {
+    background-image: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
+    background: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
+}
+
+/* ============================================
+   NAVBAR STYLING - HIGHEST PRIORITY
+   ============================================ */
+header.navbar,
+.navbar.navbar-expand,
+nav.navbar,
+header.navbar.navbar-expand {
+    height: 48px !important;
+    min-height: 48px !important;
+    max-height: 48px !important;
+    background: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
+    background-color: transparent !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    padding: 0 1rem !important;
+    box-shadow: none !important;
+}
+
 .navbar {
     height: 48px !important;
     background: linear-gradient(90deg, rgba(0, 125, 233, 1) 0%, rgba(0, 212, 197, 1) 100%) !important;
