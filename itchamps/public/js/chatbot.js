@@ -2,10 +2,21 @@
 // Initialize chatbot on page load
 (function() {
     // Prevent double initialization
-    if (window.chatbotInitialized) return;
-    window.chatbotInitialized = true;
+    if (window.itchampsChatlbotInitialized) return;
+    window.itchampsChatlbotInitialized = true;
 
     console.log('ITChamps Chatbot initializing...');
+
+    // Remove any existing chatbot buttons from other apps
+    setTimeout(function() {
+        // Hide/remove other chatbot elements
+        const existingBots = document.querySelectorAll('[class*="chatbot"], [id*="chatbot"], .widget-chatbot');
+        existingBots.forEach(function(bot) {
+            if (!bot.id || !bot.id.includes('itchamps')) {
+                bot.style.display = 'none';
+            }
+        });
+    }, 2000);
 
     // Add CSS styles
     const style = document.createElement('style');
@@ -328,44 +339,45 @@
 
     // Create chatbot HTML
     const chatbotHTML = `
-        <div class="chatbot-overlay" id="chatbotOverlay"></div>
-        
-        <div class="chatbot-dropdown" id="chatbotDropdown">
+        <div class="chatbot-overlay" id="itchampsChatlbotOverlay"></div>
+
+        <div class="chatbot-dropdown" id="itchampsChatlbotDropdown">
             <div class="chatbot-header">
                 <div class="chatbot-header-title">
                     <span>🤖</span>
-                    <span>AI Assistant</span>
+                    <span>ITChamps AI Assistant</span>
                 </div>
-                <button class="chatbot-close-btn" id="chatbotCloseBtn">×</button>
+                <button class="chatbot-close-btn" id="itchampsChatlbotCloseBtn">×</button>
             </div>
-            <div class="chatbot-messages" id="chatbotMessages">
+            <div class="chatbot-messages" id="itchampsChatlbotMessages">
                 <div class="chat-msg bot">
                     <div class="msg-bubble">👋 Hi! I'm your ITChamps AI assistant. How can I help you today?</div>
                 </div>
             </div>
             <div class="chatbot-input-area">
-                <input type="text" id="chatbotInput" placeholder="Ask me anything..." />
-                <button id="chatbotSendBtn">Send</button>
+                <input type="text" id="itchampsChatlbotInput" placeholder="Ask me anything..." />
+                <button id="itchampsChatlbotSendBtn">Send</button>
             </div>
         </div>
-        
-        <div class="chatbot-float-btn" id="chatbotFloatBtn">
+
+        <div class="chatbot-float-btn" id="itchampsChatlbotFloatBtn" style="z-index: 10000 !important;">
             🤖
         </div>
     `;
 
     const div = document.createElement('div');
+    div.id = 'itchamps-chatbot-container';
     div.innerHTML = chatbotHTML;
     document.body.appendChild(div);
 
     // Get elements
-    const dropdown = document.getElementById('chatbotDropdown');
-    const overlay = document.getElementById('chatbotOverlay');
-    const closeBtn = document.getElementById('chatbotCloseBtn');
-    const floatBtn = document.getElementById('chatbotFloatBtn');
-    const input = document.getElementById('chatbotInput');
-    const sendBtn = document.getElementById('chatbotSendBtn');
-    const messages = document.getElementById('chatbotMessages');
+    const dropdown = document.getElementById('itchampsChatlbotDropdown');
+    const overlay = document.getElementById('itchampsChatlbotOverlay');
+    const closeBtn = document.getElementById('itchampsChatlbotCloseBtn');
+    const floatBtn = document.getElementById('itchampsChatlbotFloatBtn');
+    const input = document.getElementById('itchampsChatlbotInput');
+    const sendBtn = document.getElementById('itchampsChatlbotSendBtn');
+    const messages = document.getElementById('itchampsChatlbotMessages');
 
     // Send message function
     window.sendMessage = async function() {
@@ -384,7 +396,7 @@
         input.value = '';
 
         messages.innerHTML += `
-            <div class="chat-msg bot" id="chatbotLoading">
+            <div class="chat-msg bot" id="itchampsChatlbotLoading">
                 <div class="msg-bubble">
                     <div class="typing-indicator">
                         <span></span>
@@ -402,19 +414,19 @@
                 args: { message: userMsg }
             });
 
-            const loading = document.getElementById('chatbotLoading');
+            const loading = document.getElementById('itchampsChatlbotLoading');
             if (loading) loading.remove();
 
             const botMsg = response.message?.message || "Sorry, I couldn't process that.";
             const formattedMsg = parseMarkdown(botMsg);
-            
+
             messages.innerHTML += `
                 <div class="chat-msg bot">
                     <div class="msg-bubble">${formattedMsg}</div>
                 </div>
             `;
         } catch (error) {
-            const loading = document.getElementById('chatbotLoading');
+            const loading = document.getElementById('itchampsChatlbotLoading');
             if (loading) loading.remove();
             
             messages.innerHTML += `
@@ -460,7 +472,7 @@
 
     // Add navbar icon
     function addNavbarIcon() {
-        if (document.getElementById('chatbot-navbar-icon')) return;
+        if (document.getElementById('itchamps-chatbot-navbar-icon')) return;
 
         const navbar = document.querySelector('.navbar .navbar-nav');
         if (!navbar) {
@@ -469,14 +481,14 @@
         }
 
         const li = document.createElement('li');
-        li.id = 'chatbot-navbar-icon';
+        li.id = 'itchamps-chatbot-navbar-icon';
         li.className = 'nav-item';
         li.style.marginRight = '12px';
 
         const a = document.createElement('a');
         a.className = 'nav-link';
         a.href = 'javascript:void(0)';
-        a.title = 'AI Assistant';
+        a.title = 'ITChamps AI Assistant';
         a.onclick = toggleChatbot;
         a.innerHTML = '<span style="font-size: 22px;">🤖</span>';
 
