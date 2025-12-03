@@ -5,32 +5,48 @@
    NAVBAR STYLING
    ============================================ */
 .navbar {
-    background: linear-gradient(180deg, rgb(217, 225, 233) 0%, rgb(204, 224, 251) 100%) !important;
-    border-bottom: 2px solid #1e3c72 !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    padding: 0.75rem 1rem;
+    height: 48px !important;
+    background: linear-gradient(90deg, rgba(0, 125, 233, 1) 0%, rgba(0, 212, 197, 1) 100%) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    padding: 0 !important;
 }
 
 .navbar .navbar-brand {
-    font-weight: 700;
-    font-size: 1.5rem;
-    color: #21417b !important;
-    transition: all 0.3s ease;
+    display: inline-block;
+    padding-top: 0.40625rem;
+    padding-bottom: 0.40625rem;
+    margin-right: 14px;
+    font-size: 1rem;
+    line-height: inherit;
+    white-space: nowrap;
 }
 
 .navbar .navbar-brand:hover {
-    color: #4facfe !important;
-    transform: scale(1.05);
+    opacity: 0.9;
 }
 
 /* Logo styling */
+.navbar-home img {
+    max-height: 28px !important;
+    width: auto !important;
+}
+
+.app-logo {
+    width: 24px !important;
+}
+
+.app-logo img {
+    width: 24px !important;
+    height: auto !important;
+}
+
 .navbar .navbar-home img,
 .navbar .app-logo img {
-    max-height: 40px;
+    max-height: 28px;
     width: auto;
-    max-width: 160px;
     object-fit: contain;
     transition: transform 0.3s ease;
+    vertical-align: middle;
 }
 
 .navbar .navbar-home:hover img,
@@ -40,7 +56,7 @@
 
 /* Navbar links */
 .navbar .nav-link {
-    color: #21417b !important;
+    color: white !important;
     font-weight: 500;
     transition: all 0.3s ease;
     padding: 0.5rem 1rem;
@@ -48,8 +64,8 @@
 }
 
 .navbar .nav-link:hover {
-    background: rgba(79, 172, 254, 0.15);
-    color: #1e3c72 !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: white !important;
 }
 
 .navbar .dropdown-menu {
@@ -519,11 +535,13 @@
 /* ============================================
    CUSTOM BRANDING ELEMENTS
    ============================================ */
-.brand-logo {
-    background: url('/assets/itchamps/images/sycone_logo.png') no-repeat center;
+.brand-logo,
+.navbar-brand-image {
+    background: url('/assets/itchamps/images/itchamps_iemp.png') no-repeat center;
     background-size: contain;
-    height: 40px;
-    width: 160px;
+    height: 28px;
+    width: auto;
+    max-width: 160px;
 }
 
 .powered-by {
