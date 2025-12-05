@@ -1,7 +1,9 @@
 import frappe
 from frappe import _
 from itchamps.api.constants import UserRole
+from itchamps.api.constants import UserRole
 from itchamps.api.auth_service import AuthService
+from itchamps.api.nlu import IntentParser
 
 
 @frappe.whitelist()
@@ -20,14 +22,25 @@ def get_response(message):
         user_name = context['user']['full_name']
         employee = context['employee']  # Can be None if no employee linked
         
-        # Dispatch to handlers
-        if "leave" in message.lower():
+        
+        # 1. Detect Intent
+        intent, confidence = IntentParser.detect_intent(message)
+        entities = IntentParser.extract_entities(message)
+
+        # 2. Route based on Intent
+        if intent == "leave_balance":
             return handle_leave_query(message, employee, user_name)
-        elif "manager" in message.lower():
+        elif intent == "leave_history":
+            # Add 'history' to context for handler
+            return handle_leave_query("history", employee, user_name)
+        elif intent == "leave_apply":
+             # Placeholder for application logic (handled by same function for now or new one)
+            return handle_leave_query("pending", employee, user_name)
+        elif intent == "manager_info":
             return handle_manager_query(employee)
-        elif "employee" in message.lower():
-            return handle_employee_search(message, user_id) # Pass user_id for permission check
-        elif "my info" in message.lower() or "my profile" in message.lower():
+        elif intent == "employee_search":
+            return handle_employee_search(message, user_id)
+        elif intent == "my_info":
             return handle_my_info(employee, user_name)
         else:
             return {"message": f"Hi **{user_name}**! I'm your AI assistant.\n\n**You can ask me about:**\n\n- **Leaves**: 'Show my leave balance', 'Pending leave applications'\n- **Manager**: 'Who is my manager?'\n- **Profile**: 'Show my info'\n- **Employees**: Search for employees"}
