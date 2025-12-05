@@ -35,3 +35,9 @@ class UserRole(Enum):
         """Return a list of UserRole enums that the user possesses"""
         user_roles = frappe.get_roles(user)
         return [role for role in cls if role.value in user_roles]
+
+    @classmethod
+    def is_privileged_user(cls, user):
+        """Check if user has any role that allows viewing sensitive info (HR, Admin, Manager)"""
+        privileged_roles = [cls.ADMIN, cls.HR_MANAGER, cls.HR_USER, cls.MANAGER]
+        return any(cls.has_role(user, role) for role in privileged_roles)

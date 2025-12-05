@@ -1,6 +1,7 @@
 import frappe
 from frappe import _
-from itchamps.api.github_helper import GitHubHelper
+from itchamps.api.constants import UserRole
+
 
 @frappe.whitelist()
 def get_response(message):
@@ -29,21 +30,17 @@ def get_response(message):
         if not employee:
             employee = frappe.db.get_value("Employee", {"personal_email": user}, ["name", "employee_name", "department"], as_dict=True)
 
-        # Handle GitHub-related queries
-        if any(keyword in message.lower() for keyword in ["github", "repo", "repository", "commit", "issue", "pull request", "pr", "branch", "contributor"]):
-            return handle_github_query(message)
-        # Handle employee-related queries
-        elif "leave" in message.lower():
+        if "leave" in message.lower():
             return handle_leave_query(message, employee, user)
         elif "manager" in message.lower():
             return handle_manager_query(employee)
         elif "employee" in message.lower():
-            return handle_employee_search(message)
+            return handle_employee_search(message, user)
         elif "my info" in message.lower() or "my profile" in message.lower():
             return handle_my_info(employee, user)
         else:
             # Default AI response
-            return {"message": f"Hi! I'm your AI assistant.\n\n**You can ask me about:**\n\n- **Leaves**: 'Show my leave balance', 'Pending leave applications'\n- **Manager**: 'Who is my manager?'\n- **Profile**: 'Show my info'\n- **GitHub**: Repository info, commits, issues, PRs\n- **Employees**: Search for employees\n\n**Current User:** {user}"}
+            return {"message": f"Hi! I'm your AI assistant.\n\n**You can ask me about:**\n\n- **Leaves**: 'Show my leave balance', 'Pending leave applications'\n- **Manager**: 'Who is my manager?'\n- **Profile**: 'Show my info'\n- **Employees**: Search for employees\n\n**Current User:** {user}"}
 
     except Exception as e:
         frappe.log_error(frappe.get_traceback(), "Chatbot Error")
@@ -154,8 +151,16 @@ def handle_manager_query(employee):
     return {"message": "No reporting manager found for your profile."}
 
 
-def handle_employee_search(message):
+def handle_employee_search(message, user):
     """Search for employees based on message content"""
+    
+    # Permission Check
+    allowed_roles = [UserRole.ADMIN, UserRole.HR_MANAGER, UserRole.HR_USER, UserRole.MANAGER]
+    has_permission = any(UserRole.has_role(user, role) for role in allowed_roles)
+    
+    if not has_permission:
+        return {"message": "⛔ **Access Denied**\n\nYou do not have permission to search for other employees. This feature is restricted to HR and Managers."}
+
     # Extract search terms
     search_term = message.lower().replace("employee", "").replace("search", "").replace("find", "").strip()
     
@@ -215,107 +220,3 @@ def handle_my_info(employee, user):
     return {"message": response}
 
 
-def handle_github_query(message):
-    """Handle GitHub-related queries"""
-    try:
-        github = GitHubHelper(owner="Nusrath02", repo="itchamps")
-        message_lower = message.lower()
-
-        # Repository information
-        if any(word in message_lower for word in ["repo info", "repository info", "about repo", "repo details"]):
-            info = github.get_repository_info()
-            if info:
-                response = f"""**Repository Information:**
-
-- **Name**: {info['name']}
-- **Description**: {info['description'] or 'No description'}
-- **Language**: {info['language']}
-- **Stars**: ⭐ {info['stars']}
-- **Forks**: 🍴 {info['forks']}
-- **Open Issues**: 🐛 {info['open_issues']}
-- **URL**: [View on GitHub]({info['url']})
-- **Created**: {info['created_at'][:10]}
-- **Last Updated**: {info['updated_at'][:10]}"""
-                return {"message": response}
-
-        # Recent commits
-        elif any(word in message_lower for word in ["commit", "recent commit", "latest commit"]):
-            commits = github.get_commits(limit=5)
-            if commits:
-                response = "**Recent Commits:**\n\n"
-                for commit in commits:
-                    response += f"- **{commit['sha']}** by {commit['author']}\n"
-                    response += f"  {commit['message'].split(chr(10))[0]}\n"
-                    response += f"  [{commit['date'][:10]}]({commit['url']})\n\n"
-                return {"message": response}
-
-        # Issues
-        elif "issue" in message_lower:
-            state = "closed" if "closed" in message_lower else "open"
-            issues = github.get_issues(state=state, limit=5)
-            if issues:
-                response = f"**{state.capitalize()} Issues:**\n\n"
-                for issue in issues:
-                    labels = ", ".join(issue['labels']) if issue['labels'] else "No labels"
-                    response += f"- **#{issue['number']}**: {issue['title']}\n"
-                    response += f"  By {issue['author']} | Labels: {labels}\n"
-                    response += f"  [View Issue]({issue['url']})\n\n"
-                return {"message": response}
-            else:
-                return {"message": f"No {state} issues found."}
-
-        # Pull Requests
-        elif any(word in message_lower for word in ["pull request", "pr", "pull requests", "prs"]):
-            state = "closed" if "closed" in message_lower else "open"
-            prs = github.get_pull_requests(state=state, limit=5)
-            if prs:
-                response = f"**{state.capitalize()} Pull Requests:**\n\n"
-                for pr in prs:
-                    status = "✅ Merged" if pr['merged'] else f"📝 {pr['state'].capitalize()}"
-                    response += f"- **#{pr['number']}**: {pr['title']}\n"
-                    response += f"  By {pr['author']} | {status}\n"
-                    response += f"  [View PR]({pr['url']})\n\n"
-                return {"message": response}
-            else:
-                return {"message": f"No {state} pull requests found."}
-
-        # Branches
-        elif "branch" in message_lower:
-            branches = github.get_branches(limit=10)
-            if branches:
-                response = "**Repository Branches:**\n\n"
-                for branch in branches:
-                    protected = "🔒 Protected" if branch['protected'] else ""
-                    response += f"- **{branch['name']}** {protected}\n"
-                    response += f"  Latest commit: {branch['commit_sha']}\n\n"
-                return {"message": response}
-
-        # Contributors
-        elif "contributor" in message_lower:
-            contributors = github.get_contributors(limit=10)
-            if contributors:
-                response = "**Top Contributors:**\n\n"
-                for contributor in contributors:
-                    response += f"- **{contributor['login']}**: {contributor['contributions']} contributions\n"
-                    response += f"  [Profile]({contributor['profile_url']})\n\n"
-                return {"message": response}
-
-        # Default GitHub help
-        else:
-            return {"message": """**GitHub Commands:**
-
-I can help you with the following GitHub queries:
-
-- "Show repo info" - Repository details
-- "Show recent commits" - Latest commits
-- "Show open issues" - Open issues
-- "Show closed issues" - Closed issues
-- "Show pull requests" - Open PRs
-- "Show branches" - Repository branches
-- "Show contributors" - Top contributors
-
-Just ask me anything about the itchamps GitHub repository!"""}
-
-    except Exception as e:
-        frappe.log_error(frappe.get_traceback(), "GitHub Query Error")
-        return {"message": f"GitHub Error: {str(e)}\n\nMake sure GitHub API is accessible."}
