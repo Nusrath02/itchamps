@@ -27,6 +27,7 @@ app_include_css = [
 ]
 
 app_include_js = [
+    "/assets/itchamps/js/chatbot_ui.js",
     "/assets/itchamps/js/chatbot.js"
 ]
 
@@ -37,5 +38,6 @@ web_include_css = [
 ]
 
 web_include_js = [
+    "/assets/itchamps/js/chatbot_ui.js",
     "/assets/itchamps/js/chatbot.js"
 ]
