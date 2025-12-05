@@ -17,6 +17,26 @@ def get_response(message):
             return {"message": "Please log in to use the AI Assistant."}
 
         user_id = context['user']['id']
+        user_name = context['user']['full_name']
+        employee = context['employee']  # Can be None if no employee linked
+        
+        # Dispatch to handlers
+        if "leave" in message.lower():
+            return handle_leave_query(message, employee, user_name)
+        elif "manager" in message.lower():
+            return handle_manager_query(employee)
+        elif "employee" in message.lower():
+            return handle_employee_search(message, user_id) # Pass user_id for permission check
+        elif "my info" in message.lower() or "my profile" in message.lower():
+            return handle_my_info(employee, user_name)
+        else:
+            return {"message": f"Hi **{user_name}**! I'm your AI assistant.\n\n**You can ask me about:**\n\n- **Leaves**: 'Show my leave balance', 'Pending leave applications'\n- **Manager**: 'Who is my manager?'\n- **Profile**: 'Show my info'\n- **Employees**: Search for employees"}
+
+    except Exception as e:
+        frappe.log_error(frappe.get_traceback(), "Chatbot Error")
+        return {"message": f"Error: {str(e)}"}
+
+
 def handle_leave_query(message, employee, user):
     """Handle leave-related queries with detailed information"""
     if not employee:
