@@ -1,6 +1,7 @@
 import frappe
 from frappe import _
 from itchamps.api.constants import UserRole
+from itchamps.api.auth_service import AuthService
 
 
 @frappe.whitelist()
@@ -9,44 +10,13 @@ def get_response(message):
     Main chatbot endpoint - handles user messages and returns AI responses
     """
     try:
-        # Get current user
-        user = frappe.session.user
+        # Get current user context (Rich Object)
+        context = AuthService.get_user_context()
         
-        # Try multiple ways to find employee record
-        employee = None
-        
-        # Method 1: Try by user_id field
-        employee = frappe.db.get_value("Employee", {"user_id": user}, ["name", "employee_name", "department"], as_dict=True)
-        
-        # Method 2: Try by email in prefered_email
-        if not employee:
-            employee = frappe.db.get_value("Employee", {"prefered_email": user}, ["name", "employee_name", "department"], as_dict=True)
-        
-        # Method 3: Try by company_email
-        if not employee:
-            employee = frappe.db.get_value("Employee", {"company_email": user}, ["name", "employee_name", "department"], as_dict=True)
-        
-        # Method 4: Try by personal_email
-        if not employee:
-            employee = frappe.db.get_value("Employee", {"personal_email": user}, ["name", "employee_name", "department"], as_dict=True)
+        if not context:
+            return {"message": "Please log in to use the AI Assistant."}
 
-        if "leave" in message.lower():
-            return handle_leave_query(message, employee, user)
-        elif "manager" in message.lower():
-            return handle_manager_query(employee)
-        elif "employee" in message.lower():
-            return handle_employee_search(message, user)
-        elif "my info" in message.lower() or "my profile" in message.lower():
-            return handle_my_info(employee, user)
-        else:
-            # Default AI response
-            return {"message": f"Hi! I'm your AI assistant.\n\n**You can ask me about:**\n\n- **Leaves**: 'Show my leave balance', 'Pending leave applications'\n- **Manager**: 'Who is my manager?'\n- **Profile**: 'Show my info'\n- **Employees**: Search for employees\n\n**Current User:** {user}"}
-
-    except Exception as e:
-        frappe.log_error(frappe.get_traceback(), "Chatbot Error")
-        return {"message": f"Error: {str(e)}"}
-
-
+        user_id = context['user']['id']
 def handle_leave_query(message, employee, user):
     """Handle leave-related queries with detailed information"""
     if not employee:
