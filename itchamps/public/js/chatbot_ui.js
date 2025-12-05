@@ -201,87 +201,73 @@ window.ItChampsChatbotUI = class ItChampsChatbotUI {
         const loading = document.getElementById('chatbotLoading');
         if (loading) loading.remove();
     }
+}
 
-    resetMessages() {
-        if (!this.elements.messages) return;
+appendMessageHTML(html) {
+    if (this.elements.messages) {
+        this.elements.messages.innerHTML += html;
+    }
+}
 
-        const introMessages = [
-            "👋 Hi! I'm your AI assistant. How can I help you today?",
-            "**I can help you with:**\n\n1. Leave balance & applications\n2. GitHub repository info\n3. Employee search\n4. Profile & Manager info"
-        ];
+/**
+ * Utilities
+ */
+escapeHtml(text) {
+    if (!text) return '';
+    return text.replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
 
-        this.elements.messages.innerHTML = introMessages.map((text) => `
-            <div class="chat-msg bot">
-                <div class="msg-bubble">${this.parseMarkdown(text)}</div>
-            </div>
-        `).join('');
+parseMarkdown(text) {
+    if (!text) return '';
+
+    let t = this.escapeHtml(text);
+
+    // Basic Markdown Rules
+    t = t.replace(/^### (.*$)/gim, '<h3>$1</h3>')
+        .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+        .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/^\* (.+)$/gim, '<li>$1</li>')
+        .replace(/^- (.+)$/gim, '<li>$1</li>')
+        .replace(/```([^`]+)```/g, '<pre><code>$1</code></pre>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
+        .replace(/\n\n/g, '</p><p>');
+
+    // Wrap lists (simple heuristic)
+    if (t.includes('<li>')) {
+        t = t.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
     }
 
-    appendMessageHTML(html) {
-        if (this.elements.messages) {
-            this.elements.messages.innerHTML += html;
-        }
+    return `<p>${t}</p>`.replace(/<p><\/p>/g, '');
+}
+
+// Navbar Icon
+addNavbarIcon(callback) {
+    if (document.getElementById('chatbot-navbar-icon')) return;
+
+    const navbar = document.querySelector('.navbar .navbar-nav');
+    if (!navbar) {
+        // If navbar isn't ready, try again shortly
+        setTimeout(() => this.addNavbarIcon(callback), 500);
+        return;
     }
 
-    /**
-     * Utilities
-     */
-    escapeHtml(text) {
-        if (!text) return '';
-        return text.replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
-    }
+    const li = document.createElement('li');
+    li.id = 'chatbot-navbar-icon';
+    li.className = 'nav-item';
+    li.style.marginRight = '12px';
 
-    parseMarkdown(text) {
-        if (!text) return '';
+    const a = document.createElement('a');
+    a.className = 'nav-link';
+    a.href = 'javascript:void(0)';
+    a.title = 'AI Assistant';
+    a.onclick = callback; // Bind toggle function
+    a.innerHTML = '<span style="font-size: 22px;">🤖</span>';
 
-        let t = this.escapeHtml(text);
-
-        // Basic Markdown Rules
-        t = t.replace(/^### (.*$)/gim, '<h3>$1</h3>')
-            .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-            .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-            .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-            .replace(/^\* (.+)$/gim, '<li>$1</li>')
-            .replace(/^- (.+)$/gim, '<li>$1</li>')
-            .replace(/```([^`]+)```/g, '<pre><code>$1</code></pre>')
-            .replace(/`([^`]+)`/g, '<code>$1</code>')
-            .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
-            .replace(/\n\n/g, '</p><p>');
-
-        // Wrap lists (simple heuristic)
-        if (t.includes('<li>')) {
-            t = t.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
-        }
-
-        return `<p>${t}</p>`.replace(/<p><\/p>/g, '');
-    }
-
-    // Navbar Icon
-    addNavbarIcon(callback) {
-        if (document.getElementById('chatbot-navbar-icon')) return;
-
-        const navbar = document.querySelector('.navbar .navbar-nav');
-        if (!navbar) {
-            // If navbar isn't ready, try again shortly
-            setTimeout(() => this.addNavbarIcon(callback), 500);
-            return;
-        }
-
-        const li = document.createElement('li');
-        li.id = 'chatbot-navbar-icon';
-        li.className = 'nav-item';
-        li.style.marginRight = '12px';
-
-        const a = document.createElement('a');
-        a.className = 'nav-link';
-        a.href = 'javascript:void(0)';
-        a.title = 'AI Assistant';
-        a.onclick = callback; // Bind toggle function
-        a.innerHTML = '<span style="font-size: 22px;">🤖</span>';
-
-        li.appendChild(a);
-        navbar.insertBefore(li, navbar.firstChild);
-    }
+    li.appendChild(a);
+    navbar.insertBefore(li, navbar.firstChild);
+}
 };
