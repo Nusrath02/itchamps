@@ -7,6 +7,11 @@
     if (window.chatbotControllerInitialized) return;
     window.chatbotControllerInitialized = true;
 
+    // Do not show chatbot for Guests or on Login page
+    if (frappe.session.user === 'Guest' || window.location.pathname.includes('/login')) {
+        return;
+    }
+
     // Check if UI class is loaded
     if (typeof ItChampsChatbotUI === 'undefined') {
         console.error('ItChampsChatbotUI class not found. Make sure chatbot_ui.js is loaded.');

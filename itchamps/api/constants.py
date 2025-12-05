@@ -13,7 +13,7 @@ class UserRole(Enum):
     MANAGER = "Manager"
 
     @classmethod
-    def has_role(cls, user, role):
+    def has_role(cls, user, role):    # <--- Fetches list like ['System Manager', 'Employee']
         """
         Check if a user has a specific role.
         
