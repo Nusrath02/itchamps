@@ -172,14 +172,14 @@ def handle_employee_search(message, user):
     """Search for employees based on message content"""
     
     # Permission Check
-    allowed_roles = [UserRole.ADMIN, UserRole.HR_MANAGER, UserRole.HR_USER, UserRole.MANAGER, UserRole.EMPLOYEE]
+    allowed_roles = [UserRole.ADMIN, UserRole.HR_MANAGER, UserRole.HR_USER, UserRole.MANAGER, UserRole.EMPLOYEE, UserRole.EMPLOYER]
     has_permission = any(UserRole.has_role(user, role) for role in allowed_roles)
     
-    # if not has_permission:
-    #     # If user is not HR/Manager, they can ONLY see themselves.
-    #     # But 'handle_my_info' is better for that.
-    #     # Here we just deny broad search.
-    #     return {"message": "⛔ **Access Denied**\n\nYou are not authorized to search for other employees. You can only view your own profile."}
+    if not has_permission:
+        # If user is not HR/Manager/Employer, they can ONLY see themselves.
+        # But 'handle_my_info' is better for that.
+        # Here we just deny broad search.
+        return {"message": "⛔ **Access Denied**\n\nYou are not authorized to search for other employees. You can only view your own profile."}
 
     # Extract search terms
     search_term = message.lower().replace("employee", "").replace("search", "").replace("find", "").strip()

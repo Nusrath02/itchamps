@@ -87,7 +87,7 @@ class LLMService:
 
         elif tool_name == "search_other_employees":
             # Security Check
-            allowed = [UserRole.ADMIN, UserRole.HR_MANAGER, UserRole.HR_USER, UserRole.MANAGER,UserRole.EMPLOYEE]
+            allowed = [UserRole.ADMIN, UserRole.HR_MANAGER, UserRole.HR_USER, UserRole.MANAGER, UserRole.EMPLOYEE, UserRole.EMPLOYER]
             if not any(UserRole.has_role(user_id, role) for role in allowed):
                 return "Access Denied: You do not have permission to search for other employees."
 
