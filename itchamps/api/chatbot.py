@@ -13,6 +13,7 @@ from itchamps.api.llm_service import LLMService
 def get_response(message):
     """
     Main chatbot endpoint - handles user messages and returns AI responses
+    # FORCE_DEPLOYMENT_REFRESH: 2024-12-08 v2
     """
     try:
         # Get current user context (Rich Object)
