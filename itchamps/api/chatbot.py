@@ -219,6 +219,7 @@ def handle_my_info(employee, user):
         return {"message": f"❌ **Employee record not found**\n\nNo employee record is linked to: `{user}`"}
     
     employee_id = employee.get("id")
+    frappe.log_error(f"Chatbot Debug: Fetching Employee [{employee_id}] for User [{user}]", "Chatbot Debug")
     
     # Get full employee details (Ignore permissions because we already validated the link)
     emp_details = frappe.get_doc("Employee", employee_id, ignore_permissions=True)
