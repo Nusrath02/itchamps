@@ -5,6 +5,7 @@ from itchamps.api.constants import UserRole
 from itchamps.api.auth_service import AuthService
 from itchamps.api.auth_service import AuthService
 from itchamps.api.nlu import IntentParser
+from itchamps.api.llm_service import LLMService
 
 
 
@@ -44,7 +45,17 @@ def get_response(message):
             return handle_employee_search(message, user_id)
         elif intent == "my_info":
             return handle_my_info(employee, user_name)
-        else:
+        elif intent == "my_info":
+            return handle_my_info(employee, user_name)
+        
+        # 3. Fallback to Claude AI (LLM)
+        try:
+            # If no specific rule matched, or if we want to be more conversational:
+            llm_response = LLMService.process_message(message, context)
+            return {"message": llm_response}
+        except Exception as e:
+            # If LLM completely crashes, fall back to default help
+            frappe.log_error(f"Chatbot LLM Fallback Error: {str(e)}")
             return {"message": f"Hi **{user_name}**! I'm your AI assistant.\n\n**You can ask me about:**\n\n- **Leaves**: 'Show my leave balance', 'Pending leave applications'\n- **Manager**: 'Who is my manager?'\n- **Profile**: 'Show my info'\n- **Employees**: Search for employees"}
 
     except Exception as e:
