@@ -56,7 +56,8 @@ class AuthService:
                 "is_privileged": is_privileged,
                 "is_admin": UserRole.ADMIN in roles,
                 "is_hr": UserRole.HR_MANAGER in roles or UserRole.HR_USER in roles,
-                "is_manager": UserRole.MANAGER in roles
+                "is_manager": UserRole.MANAGER in roles,
+                "is_employee": UserRole.EMPLOYEE in roles
             },
             "employee": None
         }
