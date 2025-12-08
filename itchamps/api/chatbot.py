@@ -68,7 +68,7 @@ def handle_leave_query(message, employee, user):
     if not employee:
         return {"message": f"❌ **Employee record not found**\n\nNo employee record is linked to your user account: `{user}`\n\nPlease contact HR to link your employee record."}
 
-    employee_id = employee.get("name")
+    employee_id = employee.get("id")
     employee_name = employee.get("employee_name")
     
     response = f"**Leave Information for {employee_name}**\n\n"
@@ -143,7 +143,7 @@ def handle_manager_query(employee):
     if not employee:
         return {"message": "❌ I couldn't find your employee record."}
 
-    employee_id = employee.get("name")
+    employee_id = employee.get("id")
     
     manager_id = frappe.db.get_value("Employee", employee_id, "reports_to")
 
@@ -218,7 +218,7 @@ def handle_my_info(employee, user):
     if not employee:
         return {"message": f"❌ **Employee record not found**\n\nNo employee record is linked to: `{user}`"}
     
-    employee_id = employee.get("name")
+    employee_id = employee.get("id")
     
     # Get full employee details (Ignore permissions because we already validated the link)
     emp_details = frappe.get_doc("Employee", employee_id, ignore_permissions=True)
