@@ -6,9 +6,16 @@ from itchamps.api.constants import UserRole
 class LLMService:
     @staticmethod
     def get_client():
-        api_key = frappe.conf.get("anthropic_api_key")
+        api_key = frappe.conf.get("anthropic_api_key") or frappe.db.get_value("Site Config", None, "anthropic_api_key")
+        
+        # Debug Log
         if not api_key:
-            frappe.throw("Anthropic API Key is missing in site config. Please add 'anthropic_api_key' to your site configuration.")
+            frappe.log_error("LLMService: API Key NOT FOUND in conf or db", "LLM Debug")
+        else:
+            frappe.log_error(f"LLMService: API Key FOUND (starts with {api_key[:5]}...)", "LLM Debug")
+
+        if not api_key:
+            frappe.throw("Anthropic API Key is missing. Please add 'anthropic_api_key' to site config.")
         return Anthropic(api_key=api_key)
 
     @staticmethod
