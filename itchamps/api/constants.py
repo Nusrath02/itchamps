@@ -39,5 +39,5 @@ class UserRole(Enum):
     @classmethod
     def is_privileged_user(cls, user):
         """Check if user has any role that allows viewing sensitive info (HR, Admin, Manager)"""
-        privileged_roles = [cls.ADMIN, cls.HR_MANAGER, cls.HR_USER, cls.MANAGER,cls.EMPLOYEE]
+        privileged_roles = [cls.ADMIN, cls.HR_MANAGER, cls.HR_USER, cls.MANAGER]
         return any(cls.has_role(user, role) for role in privileged_roles)
