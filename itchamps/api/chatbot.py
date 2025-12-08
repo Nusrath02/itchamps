@@ -164,7 +164,10 @@ def handle_employee_search(message, user):
     has_permission = any(UserRole.has_role(user, role) for role in allowed_roles)
     
     if not has_permission:
-        return {"message": "⛔ **Access Denied**\n\nYou do not have permission to search for other employees. This feature is restricted to HR and Managers."}
+        # If user is not HR/Manager, they can ONLY see themselves.
+        # But 'handle_my_info' is better for that.
+        # Here we just deny broad search.
+        return {"message": "⛔ **Access Denied**\n\nYou are not authorized to search for other employees. You can only view your own profile."}
 
     # Extract search terms
     search_term = message.lower().replace("employee", "").replace("search", "").replace("find", "").strip()
