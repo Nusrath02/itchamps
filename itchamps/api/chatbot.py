@@ -56,8 +56,9 @@ def get_response(message):
             return {"message": llm_response}
         except Exception as e:
             # If LLM completely crashes, fall back to default help
+            error_msg = f"LLM Error: {str(e)}"
             frappe.log_error(f"Chatbot LLM Fallback Error: {str(e)}")
-            return {"message": f"Hi **{user_name}**! I'm your AI assistant.\n\n**You can ask me about:**\n\n- **Leaves**: 'Show my leave balance', 'Pending leave applications'\n- **Manager**: 'Who is my manager?'\n- **Profile**: 'Show my info'\n- **Employees**: Search for employees"}
+            return {"message": f"Hi **{user_name}**! I tried to think, but my brain hurt.\n\nError: `{error_msg}`\n\nPlease check your API Key in Site Config."}
 
     except Exception as e:
         frappe.log_error(frappe.get_traceback(), "Chatbot Error")
