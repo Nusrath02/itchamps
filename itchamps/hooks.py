@@ -11,6 +11,16 @@ app_color = "#1e3c72"
 app_email = "info@itchamps.com"
 app_license = "MIT"
 
+# Dynamic versioning for cache busting
+app_version = str(int(time.time()))  # current timestamp, changes every deploy
+
+# include js, css files in header of desk.html
+app_include_css = [
+    f"/assets/itchamps/css/chatbot.css?v={app_version}"
+   
+]
+
+
 # Website settings
 website_context = {
     "brand_html": '<img src="/assets/itchamps/images/itchamps_iemp.png" alt="ITChamps" class="navbar-brand-image">',
