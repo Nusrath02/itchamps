@@ -186,20 +186,6 @@ def handle_employee_search(message, user):
         "Employee",
         filters=filters,
         fields=["employee_name", "department", "designation", "user_id", "company_email"],
-        limit=10
-    )
-
-    if not employees:
-        return {"message": "No employees found matching your criteria."}
-
-    response = "**👥 Employees Found:**\n\n"
-    for emp in employees:
-        email = emp.company_email or emp.user_id or "No email"
-        response += f"- **{emp.employee_name}**\n"
-        response += f"  {emp.designation or 'N/A'} - {emp.department or 'N/A'}\n"
-        response += f"  📧 {email}\n\n"
-
-    return {"message": response}
 
 
 def handle_my_info(employee, user):
@@ -209,8 +195,8 @@ def handle_my_info(employee, user):
     
     employee_id = employee.get("name")
     
-    # Get full employee details
-    emp_details = frappe.get_doc("Employee", employee_id)
+    # Get full employee details (Ignore permissions because we already validated the link)
+    emp_details = frappe.get_doc("Employee", employee_id, ignore_permissions=True)
     
     response = f"**👤 Your Profile Information**\n\n"
     response += f"- **Name**: {emp_details.employee_name}\n"
