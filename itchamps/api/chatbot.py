@@ -5,7 +5,7 @@ from itchamps.api.constants import UserRole
 from itchamps.api.auth_service import AuthService
 from itchamps.api.auth_service import AuthService
 from itchamps.api.nlu import IntentParser
-from itchamps.api.llm_service import LLMService
+
 
 
 @frappe.whitelist()
@@ -44,15 +44,7 @@ def get_response(message):
             return handle_employee_search(message, user_id)
         elif intent == "my_info":
             return handle_my_info(employee, user_name)
-        elif intent == "my_info":
-            return handle_my_info(employee, user_name)
-        
-        # 3. Fallback to Claude AI (LLM)
-        try:
-            llm_response = LLMService.process_message(message, context)
-            return {"message": llm_response}
-        except Exception:
-            # If LLM fails (e.g. no API key), show default help
+        else:
             return {"message": f"Hi **{user_name}**! I'm your AI assistant.\n\n**You can ask me about:**\n\n- **Leaves**: 'Show my leave balance', 'Pending leave applications'\n- **Manager**: 'Who is my manager?'\n- **Profile**: 'Show my info'\n- **Employees**: Search for employees"}
 
     except Exception as e:
