@@ -43,7 +43,6 @@ app_include_js = [
 
 # Make sure our JS loads after page is ready
 web_include_css = [
-    "/assets/itchamps/css/itchamps_theme.css",
     "/assets/itchamps/css/chatbot.css"
 ]
 
