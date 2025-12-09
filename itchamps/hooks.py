@@ -31,19 +31,22 @@ website_context = {
 app_logo_url = "/assets/itchamps/images/itchamps_iemp.png"
 
 # Includes in <head>
-# app_include_css is defined above
+app_include_css = [
+    # "/assets/itchamps/css/itchamps_theme.css",
+    "/assets/itchamps/css/chatbot.css"
+]
 
 app_include_js = [
-    f"/assets/itchamps/js/chatbot_ui.js?v={app_version}",
-    f"/assets/itchamps/js/chatbot.js?v={app_version}"
+    "/assets/itchamps/js/chatbot_ui.js",
+    "/assets/itchamps/js/chatbot.js"
 ]
 
 # Make sure our JS loads after page is ready
 web_include_css = [
-    f"/assets/itchamps/css/chatbot.css?v={app_version}"
+    "/assets/itchamps/css/chatbot.css"
 ]
 
 web_include_js = [
-    f"/assets/itchamps/js/chatbot_ui.js?v={app_version}",
-    f"/assets/itchamps/js/chatbot.js?v={app_version}"
+    "/assets/itchamps/js/chatbot_ui.js",
+    "/assets/itchamps/js/chatbot.js"
 ]
