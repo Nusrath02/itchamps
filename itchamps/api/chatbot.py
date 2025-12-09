@@ -227,22 +227,38 @@ def handle_my_info(employee, user):
     employee_id = employee.get("id")
     frappe.log_error(f"Chatbot Debug: Fetching Employee [{employee_id}] for User [{user}]", "Chatbot Debug")
     
-    # Get full employee details (Ignore permissions because we already validated the link)
-    emp_details = frappe.get_doc("Employee", employee_id, ignore_permissions=True)
-    
+    try:
+        # Get full employee details (Ignore permissions because we already validated the link)
+        emp_details = frappe.get_doc("Employee", employee_id, ignore_permissions=True)
+    except frappe.DoesNotExistError:
+        # Fallback to the basic info we have in context
+        frappe.log_error(f"Chatbot Error: Employee ID [{employee_id}] not found in DocType. Using cached context.", "Chatbot Debug")
+        emp_details = frappe._dict(employee) # Use what we have
+        # Map keys from context if needed
+        emp_details.employee_name = employee.get("name") # "name" in context is "employee_name"
+        emp_details.name = employee.get("id") # "id" in context is "name" (PK) 
+
     response = f"**👤 Your Profile Information**\n\n"
-    response += f"- **Name**: {emp_details.employee_name}\n"
-    response += f"- **Employee ID**: {emp_details.name}\n"
-    response += f"- **Department**: {emp_details.department or 'N/A'}\n"
-    response += f"- **Designation**: {emp_details.designation or 'N/A'}\n"
-    response += f"- **Date of Joining**: {emp_details.date_of_joining or 'N/A'}\n"
-    response += f"- **Email**: {emp_details.company_email or emp_details.user_id or 'N/A'}\n"
-    response += f"- **Status**: {emp_details.status}\n"
+    response += f"- **Name**: {getattr(emp_details, 'employee_name', 'N/A')}\n"
+    response += f"- **Employee ID**: {getattr(emp_details, 'name', 'N/A')}\n"
+    response += f"- **Department**: {getattr(emp_details, 'department', 'N/A')}\n"
+    response += f"- **Designation**: {getattr(emp_details, 'designation', 'N/A')}\n"
     
-    if emp_details.reports_to:
-        manager_name = frappe.db.get_value("Employee", emp_details.reports_to, "employee_name")
-        response += f"- **Reports To**: {manager_name}\n"
+    # Only try to access other fields if it's a real Doc
+    if hasattr(emp_details, 'date_of_joining'):
+         response += f"- **Date of Joining**: {emp_details.date_of_joining or 'N/A'}\n"
+         
+    email = getattr(emp_details, 'company_email', None) or getattr(emp_details, 'user_id', None) or 'N/A'
+    response += f"- **Email**: {email}\n"
+    response += f"- **Status**: {getattr(emp_details, 'status', 'Active')}\n"
     
+    if getattr(emp_details, 'reports_to', None):
+        try:
+            manager_name = frappe.db.get_value("Employee", emp_details.reports_to, "employee_name")
+            response += f"- **Reports To**: {manager_name}\n"
+        except:
+            pass
+
     return {"message": response}
 
 
