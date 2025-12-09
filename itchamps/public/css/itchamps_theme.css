@@ -1,5 +1,5 @@
-/* ITChamps Custom Theme - Selective Restoration */
-/* Only Navbar, Sidebar, and Branding retained */
+/* ITChamps Custom Theme */
+/* Professional Blue Gradient Theme for Frappe/ERPNext */
 
 /* ============================================
    CRITICAL: Force navbar gradient override
@@ -112,6 +112,7 @@ header.navbar.navbar-expand {
 .search-bar .awesomplete ul {
     border: none;
     border-top: 1px solid var(--border-color);
+    /* border-radius: 0 0 var(--border-radius) var(--border-radius); */
     box-shadow: var(--awesomebar-shadow);
 }
 
@@ -169,7 +170,309 @@ header.navbar.navbar-expand {
 }
 
 /* ============================================
-   RESPONSIVE DESIGN (Sidebar Only)
+   MAIN CONTENT AREA
+   ============================================ */
+.layout-main-section {
+    background: #f5f7fa !important;
+    padding: 2rem;
+}
+
+
+.page-title {
+    color: #21417b !important;
+    font-weight: 700;
+    font-size: 1.75rem;
+    margin: 0;
+}
+
+/* ============================================
+   CARDS AND WIDGETS
+   ============================================ */
+.widget,
+.widget-group,
+.desk-card {
+    background: white !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid #e8edf2 !important;
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+}
+
+.widget:hover,
+.desk-card:hover {
+    box-shadow: 0 6px 20px rgba(30, 60, 114, 0.12) !important;
+    transform: translateY(-2px);
+}
+
+.widget-head,
+.widget-title {
+    color: #21417b !important;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 1rem 1.5rem;
+    border-bottom: 2px solid #f0f4f8;
+}
+
+.widget-body {
+    padding: 1.5rem;
+}
+
+/* Number cards */
+.number-card-container .number-card {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #4facfe 100%) !important;
+    color: white !important;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(30, 60, 114, 0.2);
+    transition: all 0.3s ease;
+}
+
+.number-card-container .number-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(30, 60, 114, 0.3);
+}
+
+.number-card .number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white !important;
+}
+
+.number-card .card-label {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 0.9rem;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+.btn-primary {
+    background: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
+    border: none !important;
+    color: white !important;
+    font-weight: 600;
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(30, 60, 114, 0.2);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(30, 60, 114, 0.3);
+}
+
+.btn-secondary {
+    background: #f0f4f8 !important;
+    color: #21417b !important;
+    border: 2px solid #ccd0e8 !important;
+    font-weight: 600;
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: white !important;
+    border-color: #1e3c72 !important;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%) !important;
+    border: none !important;
+    color: white !important;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    border: none !important;
+    color: white !important;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+/* ============================================
+   FORMS
+   ============================================ */
+.form-control,
+.input-with-feedback {
+    border: 2px solid #e8edf2;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.input-with-feedback:focus {
+    border-color: #4facfe !important;
+    box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.2) !important;
+}
+
+.frappe-control label {
+    color: #21417b;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.form-section {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.section-head {
+    color: #21417b !important;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #f0f4f8;
+}
+
+/* ============================================
+   TABLES
+   ============================================ */
+.datatable {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.dt-header {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #4facfe 100%) !important;
+    color: white !important;
+}
+
+.dt-cell {
+    border-bottom: 1px solid #f0f4f8;
+    padding: 1rem;
+}
+
+.dt-row:hover {
+    background: rgba(79, 172, 254, 0.05);
+}
+
+/* ============================================
+   ALERTS AND NOTIFICATIONS
+   ============================================ */
+.alert {
+    border-radius: 8px;
+    border-left: 4px solid;
+    padding: 1rem 1.5rem;
+}
+
+.alert-success {
+    background: #f0fdf4;
+    border-left-color: #22c55e;
+    color: #166534;
+}
+
+.alert-danger {
+    background: #fef2f2;
+    border-left-color: #ef4444;
+    color: #991b1b;
+}
+
+.alert-warning {
+    background: #fffbeb;
+    border-left-color: #f59e0b;
+    color: #92400e;
+}
+
+.alert-info {
+    background: #eff6ff;
+    border-left-color: #3b82f6;
+    color: #1e3a8a;
+}
+
+/* ============================================
+   MODALS
+   ============================================ */
+.modal-content {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #4facfe 100%);
+    color: white;
+    border-radius: 12px 12px 0 0;
+    padding: 1.5rem;
+}
+
+.modal-title {
+    color: white !important;
+    font-weight: 700;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f0f4f8;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #1e3c72 0%, #4facfe 100%);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #2a5298 0%, #4facfe 100%);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.slide-down {
+    animation: slideDown 0.3s ease-out;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
    ============================================ */
 @media (max-width: 991px) {
     .layout-side-section {
@@ -187,6 +490,55 @@ header.navbar.navbar-expand {
     .navbar {
         padding: 0.5rem 1rem;
     }
+
+    .page-title {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .layout-main-section {
+        padding: 1rem;
+    }
+
+    .widget,
+    .desk-card {
+        margin-bottom: 1rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .number-card .number {
+        font-size: 2rem;
+    }
+}
+
+
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.text-primary-custom {
+    color: #21417b !important;
+}
+
+.text-secondary-custom {
+    color: #4facfe !important;
+}
+
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #4facfe 100%) !important;
+}
+
+.shadow-custom {
+    box-shadow: 0 4px 12px rgba(30, 60, 114, 0.15) !important;
+}
+
+.border-primary-custom {
+    border-color: #1e3c72 !important;
 }
 
 /* ============================================
@@ -199,4 +551,12 @@ header.navbar.navbar-expand {
     height: 28px;
     width: auto;
     max-width: 160px;
+}
+
+.powered-by {
+    color: #a67c28;
+    font-size: 0.75rem;
+    text-align: center;
+    padding: 1rem;
+    border-top: 1px solid #e8edf2;
 }
