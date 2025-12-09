@@ -43,7 +43,7 @@ def get_response(message):
         elif intent == "manager_info":
             return handle_manager_query(employee)
         elif intent == "employee_search":
-            return handle_employee_search(message, user_id)
+            return handle_employee_search(message, user_id, employee)
         elif intent == "my_info":
             return handle_my_info(employee, user_name)
         elif intent == "my_info":
@@ -169,14 +169,17 @@ def handle_manager_query(employee):
     return {"message": "No reporting manager found for your profile."}
 
 
-def handle_employee_search(message, user):
+def handle_employee_search(message, user_id, employee_doc=None):
     """Search for employees based on message content"""
     
-    # Permission Check
+    # Permission Check: Allow if user has role OR is a linked employee
     allowed_roles = [UserRole.ADMIN, UserRole.HR_MANAGER, UserRole.HR_USER, UserRole.MANAGER, UserRole.EMPLOYEE, UserRole.EMPLOYER]
-    has_permission = any(UserRole.has_role(user, role) for role in allowed_roles)
+    has_role_permission = any(UserRole.has_role(user_id, role) for role in allowed_roles)
     
-    if not has_permission:
+    # Implicit permission if they are a valid Employee
+    is_valid_employee = employee_doc is not None
+    
+    if not (has_role_permission or is_valid_employee):
         # If user is not HR/Manager/Employer, they can ONLY see themselves.
         # But 'handle_my_info' is better for that.
         # Here we just deny broad search.
