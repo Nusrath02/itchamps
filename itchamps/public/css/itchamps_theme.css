@@ -1,1 +1,202 @@
-/* Global Theme Removed by User Request */
+/* ITChamps Custom Theme - Selective Restoration */
+/* Only Navbar, Sidebar, and Branding retained */
+
+/* ============================================
+   CRITICAL: Force navbar gradient override
+   ============================================ */
+html body header.navbar,
+html body .navbar.navbar-expand,
+html body nav.navbar {
+    background-image: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
+    background: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
+}
+
+/* ============================================
+   NAVBAR STYLING - HIGHEST PRIORITY
+   ============================================ */
+header.navbar,
+.navbar.navbar-expand,
+nav.navbar,
+header.navbar.navbar-expand {
+    height: 48px !important;
+    min-height: 48px !important;
+    max-height: 48px !important;
+    background: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
+    background-color: transparent !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    padding: 0 1rem !important;
+    box-shadow: none !important;
+}
+
+.navbar {
+    height: 48px !important;
+    background: linear-gradient(90deg, rgba(0, 125, 233, 1) 0%, rgba(0, 212, 197, 1) 100%) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    padding: 0 !important;
+}
+
+.navbar .navbar-brand {
+    display: inline-block;
+    padding-top: 0.40625rem;
+    padding-bottom: 0.40625rem;
+    margin-right: 14px;
+    font-size: 1rem;
+    line-height: inherit;
+    white-space: nowrap;
+}
+
+.navbar .navbar-brand:hover {
+    opacity: 0.9;
+}
+
+/* Logo styling */
+.navbar-home img {
+    max-height: 28px !important;
+    width: auto !important;
+}
+
+.app-logo {
+    width: 24px !important;
+}
+
+.app-logo img {
+    width: 24px !important;
+    height: auto !important;
+}
+
+.navbar .navbar-home img,
+.navbar .app-logo img {
+    max-height: 28px;
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    vertical-align: middle;
+}
+
+.navbar .navbar-home:hover img,
+.navbar .app-logo:hover img {
+    transform: scale(1.05);
+}
+
+/* Navbar links */
+.navbar .nav-link {
+    color: white !important;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+}
+
+.navbar .nav-link:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: white !important;
+}
+
+.navbar .dropdown-menu {
+    border: 1px solid #ccd0e8;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Search bar in navbar */
+.navbar .search-bar input {
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.navbar .search-bar input:focus {
+    border-color: #4facfe;
+    box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.2);
+}
+
+.search-bar .awesomplete ul {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    box-shadow: var(--awesomebar-shadow);
+}
+
+/* ============================================
+   SIDEBAR STYLING
+   ============================================ */
+.layout-side-section {
+    background: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
+    color: white !important;
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar-menu {
+    background: transparent !important;
+}
+
+.desk-sidebar .sidebar-label,
+.desk-sidebar .standard-sidebar-label {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    padding: 1rem 1.5rem 0.5rem;
+}
+
+.desk-sidebar .sidebar-item,
+.desk-sidebar .standard-sidebar-item {
+    color: rgba(255, 255, 255, 0.85) !important;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    margin: 0.25rem 0.75rem;
+    padding: 0.75rem 1rem;
+}
+
+.desk-sidebar .sidebar-item:hover,
+.desk-sidebar .standard-sidebar-item:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: white !important;
+    transform: translateX(5px);
+}
+
+.desk-sidebar .sidebar-item.selected,
+.desk-sidebar .standard-sidebar-item.selected {
+    background: rgba(255, 255, 255, 0.25) !important;
+    color: white !important;
+    font-weight: 600;
+    border-left: 4px solid #a67c28;
+}
+
+/* Sidebar icons */
+.desk-sidebar .sidebar-item-icon,
+.standard-sidebar-item .sidebar-item-icon {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN (Sidebar Only)
+   ============================================ */
+@media (max-width: 991px) {
+    .layout-side-section {
+        position: fixed;
+        left: -280px;
+        transition: left 0.3s ease;
+        background: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
+        z-index: 1000;
+    }
+
+    .layout-side-section.opened {
+        left: 0;
+    }
+
+    .navbar {
+        padding: 0.5rem 1rem;
+    }
+}
+
+/* ============================================
+   CUSTOM BRANDING ELEMENTS
+   ============================================ */
+.brand-logo,
+.navbar-brand-image {
+    background: url('/assets/itchamps/images/itchamps_iemp.png') no-repeat center;
+    background-size: contain;
+    height: 28px;
+    width: auto;
+    max-width: 160px;
+}
