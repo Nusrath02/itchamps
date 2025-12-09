@@ -198,7 +198,7 @@ def handle_employee_search(message, user):
     employees = frappe.get_all(
         "Employee",
         filters=filters,
-        fields=["employee_name", "department", "designation", "user_id", "company_email"],
+        fields=["name", "employee_name", "department", "designation", "user_id", "company_email"],
         limit=10
     )
 
@@ -209,8 +209,10 @@ def handle_employee_search(message, user):
     for emp in employees:
         email = emp.company_email or emp.user_id or "No email"
         response += f"- **{emp.employee_name}**\n"
-        response += f"  {emp.designation or 'N/A'} - {emp.department or 'N/A'}\n"
-        response += f"  📧 {email}\n\n"
+        response += f"  - **ID**: {emp.name}\n"
+        response += f"  - **Designation**: {emp.designation or 'N/A'}\n"
+        response += f"  - **Department**: {emp.department or 'N/A'}\n"
+        response += f"  - **Email**: {email}\n\n"
 
     return {"message": response}
 
