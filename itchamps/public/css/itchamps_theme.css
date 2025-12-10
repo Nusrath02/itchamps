@@ -1,29 +1,27 @@
-/* ============================================
-   NAVBAR COLORS ONLY
-   ============================================ */
+/* ITChamps — Colors only (navbar + sidebar) */
+
+/* NAVBAR COLORS */
 .navbar,
 header.navbar {
     background: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
     background-color: transparent !important;
 }
 
-/* Navbar Text */
+/* Navbar links */
 .navbar .nav-link {
-    color: white !important;
+    color: #ffffff !important;
+    font-weight: 500;
 }
 
 .navbar .nav-link:hover {
-    color: white !important;
-    background: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.12) !important;
 }
 
-
-/* ============================================
-   SIDEBAR COLORS ONLY
-   ============================================ */
+/* SIDEBAR COLORS */
 .layout-side-section {
     background: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
-    color: white !important;
+    color: #ffffff !important;
 }
 
 .desk-sidebar .sidebar-label,
@@ -38,46 +36,37 @@ header.navbar {
 
 .desk-sidebar .sidebar-item:hover,
 .desk-sidebar .standard-sidebar-item:hover {
-    background: rgba(255, 255, 255, 0.15) !important;
-    color: white !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    color: #ffffff !important;
 }
 
 .desk-sidebar .sidebar-item.selected,
 .desk-sidebar .standard-sidebar-item.selected {
-    background: rgba(255, 255, 255, 0.25) !important;
-    color: white !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
 }
 
 .desk-sidebar .sidebar-item-icon,
 .standard-sidebar-item .sidebar-item-icon {
-    color: rgba(255, 255, 255, 0.9) !important;
+    color: rgba(255, 255, 255, 0.95) !important;
 }
 
-
-/* ============================================
-   BRAND LOGO (Only Image, no size/align edits)
-   ============================================ */
+/* BRAND LOGO: keep only background image reference (no sizing/position overrides) */
 .brand-logo,
 .navbar-brand-image {
     background: url('/assets/itchamps/images/itchamps_iemp.png') no-repeat center;
     background-size: contain;
 }
 
-
-/* ============================================
-   OPTIONAL: Primary Button Color
-   (Tell me if you want this removed)
-   ============================================ */
+/* OPTIONAL: Primary button color — remove if you don't want buttons changed */
 .btn-primary {
     background: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
     border: none !important;
-    color: white !important;
+    color: #ffffff !important;
 }
 
-
-/* ============================================
-   OPTIONAL: Scrollbar COLOR ONLY
-   ============================================ */
+/* Small cosmetic scrollbar thumb color only (no size/layout changes) */
 ::-webkit-scrollbar-thumb {
     background: linear-gradient(135deg, #1e3c72 0%, #4facfe 100%);
+    border-radius: 5px;
 }
