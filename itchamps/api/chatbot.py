@@ -173,13 +173,10 @@ def handle_employee_search(message, user_id, employee_doc=None):
     """Search for employees based on message content"""
     
     # Permission Check: Allow if user has role OR is a linked employee
-    allowed_roles = [UserRole.ADMIN, UserRole.HR_MANAGER, UserRole.HR_USER, UserRole.MANAGER, UserRole.EMPLOYEE, UserRole.EMPLOYER]
+    allowed_roles = [UserRole.ADMIN, UserRole.HR_MANAGER, UserRole.HR_USER, UserRole.MANAGER]
     has_role_permission = any(UserRole.has_role(user_id, role) for role in allowed_roles)
     
-    # Implicit permission if they are a valid Employee
-    is_valid_employee = employee_doc is not None
-    
-    if not (has_role_permission or is_valid_employee):
+    if not has_role_permission:
         # If user is not HR/Manager/Employer, they can ONLY see themselves.
         # But 'handle_my_info' is better for that.
         # Here we just deny broad search.
