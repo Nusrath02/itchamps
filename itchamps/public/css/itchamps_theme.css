@@ -9,29 +9,29 @@ header.navbar {
 
 /* Navbar links */
 .navbar .nav-link {
-    color: #ffffff !important;
+    color: #000000 !important;
     font-weight: 500;
 }
 
 .navbar .nav-link:hover {
-    color: #ffffff !important;
+    color: #000000 !important;
     background: rgba(255, 255, 255, 0.12) !important;
 }
 
 /* SIDEBAR COLORS */
 .layout-side-section {
     background: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
-    color: #ffffff !important;
+    color: #000000 !important;
 }
 
 .desk-sidebar .sidebar-label,
 .desk-sidebar .standard-sidebar-label {
-    color: rgba(255, 255, 255, 0.9) !important;
+    color: rgba(0, 0, 0, 0.9) !important;
 }
 
 .desk-sidebar .sidebar-item,
 .desk-sidebar .standard-sidebar-item {
-    color: rgba(255, 255, 255, 0.85) !important;
+    color: rgba(0, 0, 0, 0.85) !important;
 }
 
 .desk-sidebar .sidebar-item:hover,
@@ -43,7 +43,7 @@ header.navbar {
 .desk-sidebar .sidebar-item.selected,
 .desk-sidebar .standard-sidebar-item.selected {
     background: rgba(255, 255, 255, 0.2) !important;
-    color: #ffffff !important;
+    color: #000000 !important;
 }
 
 .desk-sidebar .sidebar-item-icon,
@@ -62,7 +62,7 @@ header.navbar {
 .btn-primary {
     background: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
     border: none !important;
-    color: #ffffff !important;
+    color: #000000 !important;
 }
 
 /* Small cosmetic scrollbar thumb color only (no size/layout changes) */
