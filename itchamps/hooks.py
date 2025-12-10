@@ -14,11 +14,7 @@ app_license = "MIT"
 # Dynamic versioning for cache busting
 app_version = str(int(time.time()))  # current timestamp, changes every deploy
 
-# include js, css files in header of desk.html
-app_include_css = [
-    f"/assets/itchamps/css/chatbot.css?v={app_version}"
-   
-]
+# duplicate removed
 
 
 # Website settings
