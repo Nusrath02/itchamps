@@ -37,6 +37,11 @@ app_include_js = [
     f"/assets/itchamps/js/chatbot.js?v={app_version}"
 ]
 
+# itchamps/hooks.py
+app_include_js = "/assets/itchamps/js/hide_chat_on_login.js"
+web_include_js = "/assets/itchamps/js/hide_chat_on_login.js"
+
+
 # Make sure our JS loads after page is ready
 web_include_css = [
     f"/assets/itchamps/css/chatbot.css?v={app_version}"
