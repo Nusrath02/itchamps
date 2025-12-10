@@ -7,7 +7,7 @@ app_title = "ITChamps"
 app_publisher = "ITChamps"
 app_description = "ITChamps HR Management with AI Chatbot"
 app_icon = "octicon octicon-organization"
-app_color = "#1e3c72"
+app_color = "grey"  # Changed from #1e3c72 to use default Frappe theme
 app_email = "info@itchamps.com"
 app_license = "MIT"
 
