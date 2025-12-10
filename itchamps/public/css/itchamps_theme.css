@@ -53,7 +53,7 @@ html body nav.navbar,
 .desk-sidebar .standard-sidebar-item.selected {
     background: rgba(255, 255, 255, 0.25) !important;
     color: white !important;
-    border-left: 4px solid #a67c28;
+    /* border-left: 4px solid #a67c28; */
     /* Keeping this as it's a color indicator */
 }
 
