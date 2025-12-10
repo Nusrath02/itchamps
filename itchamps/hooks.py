@@ -28,20 +28,17 @@ app_include_css = [
 
 app_include_js = [
     f"/assets/itchamps/js/chatbot_ui.js?v={app_version}",
-    f"/assets/itchamps/js/chatbot.js?v={app_version}"
+    f"/assets/itchamps/js/chatbot.js?v={app_version}",
+    f"/assets/itchamps/js/hide_chat_on_login.js?v={app_version}"
 ]
 
-# itchamps/hooks.py
-app_include_js = "/assets/itchamps/js/hide_chat_on_login.js"
-web_include_js = "/assets/itchamps/js/hide_chat_on_login.js"
-
-
-# Make sure our JS loads after page is ready
+# Make sure our JS and CSS loads on web pages too
 web_include_css = [
     f"/assets/itchamps/css/chatbot.css?v={app_version}"
 ]
 
 web_include_js = [
     f"/assets/itchamps/js/chatbot_ui.js?v={app_version}",
-    f"/assets/itchamps/js/chatbot.js?v={app_version}"
+    f"/assets/itchamps/js/chatbot.js?v={app_version}",
+    f"/assets/itchamps/js/hide_chat_on_login.js?v={app_version}"
 ]
