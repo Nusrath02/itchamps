@@ -361,3 +361,20 @@
         transform: translateY(-10px);
     }
 }
+
+/* ==================== HIDE CHATBOT ON LOGIN PAGES ==================== */
+/* Hide chatbot on all login-related pages */
+body.login-page .chatbot,
+body.page-login .chatbot,
+body.login .chatbot,
+#login .chatbot,
+#chatbot.login,
+#chatbot.login-page,
+.chat-launcher.login,
+[data-route="#login"] .chatbot,
+.chatbot-float-btn.login-page,
+body.login-page .chatbot-float-btn,
+body.page-login .chatbot-float-btn,
+body.login .chatbot-float-btn {
+    display: none !important;
+}

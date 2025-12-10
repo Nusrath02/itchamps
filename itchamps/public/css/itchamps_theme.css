@@ -1,84 +1,11 @@
-/* ITChamps — Colors only (navbar + sidebar) */
-
-/* NAVBAR COLORS */
-/* .navbar,
-header.navbar {
-    background: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
-    background-color: transparent !important;
-}
-
-/* Navbar links */
-.navbar .nav-link {
-    color: #000000 !important;
-    font-weight: 500;
-}
-
-.navbar .nav-link:hover {
-    color: #000000 !important;
-    background: rgba(255, 255, 255, 0.12) !important;
-} */
-
-/* SIDEBAR COLORS */
-/* .layout-side-section {
-    background: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
-    color: #000000 !important;
-}
-
-.desk-sidebar .sidebar-label,
-.desk-sidebar .standard-sidebar-label {
-    color: rgba(0, 0, 0, 0.9) !important;
-}
-
-.desk-sidebar .sidebar-item,
-.desk-sidebar .standard-sidebar-item {
-    color: rgba(0, 0, 0, 0.85) !important;
-}
-
-.desk-sidebar .sidebar-item:hover,
-.desk-sidebar .standard-sidebar-item:hover {
-    background: rgba(255, 255, 255, 0.12) !important;
-    color: #ffffff !important;
-}
-
-.desk-sidebar .sidebar-item.selected,
-.desk-sidebar .standard-sidebar-item.selected {
-    background: rgba(255, 255, 255, 0.2) !important;
-    color: #000000 !important;
-}
-
-.desk-sidebar .sidebar-item-icon,
-.standard-sidebar-item .sidebar-item-icon {
-    color: rgba(255, 255, 255, 0.95) !important; */
-}
-
-/* BRAND LOGO: keep only background image reference (no sizing/position overrides) */
-.brand-logo,
-.navbar-brand-image {
-    background: url('/assets/itchamps/images/itchamps_iemp.png') no-repeat center;
-    background-size: contain;
-}
-/* hide chatbot on login (fallback) */
-body.login-page .chatbot,
-body.page-login .chatbot,
-body.login .chatbot,
-#login .chatbot,
-#chatbot.login,
-#chatbot.login-page,
-.chat-launcher.login,
-[data-route="#login"] .chatbot {
-  display: none !important;
-}
-
-
-/* OPTIONAL: Primary button color — remove if you don't want buttons changed */
-/* .btn-primary {
-    background: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
-    border: none !important;
-    color: #000000 !important;
-} */
-
-/* Small cosmetic scrollbar thumb color only (no size/layout changes) */
-/* ::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #1e3c72 0%, #4facfe 100%);
-    border-radius: 5px;
-} */
+/* ==================== ITCHAMPS THEME CSS ==================== */
+/*
+ * This file has been cleared to prevent CSS conflicts with Frappe UI.
+ *
+ * Previous functionality moved to:
+ * - Brand logo: Handled via hooks.py (brand_html and app_logo_url)
+ * - Hide chatbot on login: Moved to chatbot.css (lines 365-380)
+ *
+ * If you need custom theme styles in the future, add them here carefully
+ * to avoid affecting Frappe's default layout and alignments.
+ */

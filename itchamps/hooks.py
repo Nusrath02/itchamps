@@ -28,7 +28,7 @@ app_logo_url = "/assets/itchamps/images/itchamps_iemp.png"
 
 # Includes in <head>
 app_include_css = [
-    f"/assets/itchamps/css/itchamps_theme.css?v={app_version}",
+    # f"/assets/itchamps/css/itchamps_theme.css?v={app_version}",
     f"/assets/itchamps/css/chatbot.css?v={app_version}"
 ]
 
