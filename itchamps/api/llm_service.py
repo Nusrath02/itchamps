@@ -3,6 +3,9 @@ import json
 from anthropic import Anthropic
 from itchamps.api.constants import UserRole
 
+# Force cache clear - 2025-12-10 16:48
+# This comment forces Python to recompile the module
+
 class LLMService:
     @staticmethod
     def get_client():
