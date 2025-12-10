@@ -11,11 +11,6 @@ app_color = "grey"  # Changed from #1e3c72 to use default Frappe theme
 app_email = "info@itchamps.com"
 app_license = "MIT"
 
-# Dynamic versioning for cache busting
-app_version = str(int(time.time()))  # current timestamp, changes every deploy
-
-# duplicate removed
-
 
 # Website settings
 website_context = {
@@ -28,7 +23,6 @@ app_logo_url = "/assets/itchamps/images/itchamps_iemp.png"
 
 # Includes in <head>
 app_include_css = [
-    # f"/assets/itchamps/css/itchamps_theme.css?v={app_version}",
     f"/assets/itchamps/css/chatbot.css?v={app_version}"
 ]
 
