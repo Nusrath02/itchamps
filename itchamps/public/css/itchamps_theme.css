@@ -1,33 +1,26 @@
-/* ITChamps Custom Theme - Selective Restoration */
-/* Only Navbar, Sidebar, and Branding colors retained */
-/* Reformatted to exclude layout/alignment properties causing regression */
-
 /* ============================================
-   NAVBAR GRADIENTS (Colors Only)
+   NAVBAR COLORS ONLY
    ============================================ */
-html body header.navbar,
-html body .navbar.navbar-expand,
-html body nav.navbar,
-.navbar {
-    background-image: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
+.navbar,
+header.navbar {
     background: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
     background-color: transparent !important;
-    box-shadow: none !important;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
 }
 
-/* Navbar Links Text Color */
+/* Navbar Text */
 .navbar .nav-link {
     color: white !important;
-    font-weight: 500;
 }
 
 .navbar .nav-link:hover {
-    background: rgba(255, 255, 255, 0.15) !important;
     color: white !important;
+    background: rgba(255, 255, 255, 0.15) !important;
 }
 
-/* Sidebar Background (Colors Only) */
+
+/* ============================================
+   SIDEBAR COLORS ONLY
+   ============================================ */
 .layout-side-section {
     background: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
     color: white !important;
@@ -53,8 +46,6 @@ html body nav.navbar,
 .desk-sidebar .standard-sidebar-item.selected {
     background: rgba(255, 255, 255, 0.25) !important;
     color: white !important;
-    /* border-left: 4px solid #a67c28; */
-    /* Keeping this as it's a color indicator */
 }
 
 .desk-sidebar .sidebar-item-icon,
@@ -62,31 +53,31 @@ html body nav.navbar,
     color: rgba(255, 255, 255, 0.9) !important;
 }
 
-/* Logo/Branding */
+
+/* ============================================
+   BRAND LOGO (Only Image, no size/align edits)
+   ============================================ */
 .brand-logo,
 .navbar-brand-image {
     background: url('/assets/itchamps/images/itchamps_iemp.png') no-repeat center;
     background-size: contain;
 }
 
-/* Page Title Color */
-.page-title {
-    color: #21417b !important;
-}
 
-/* Primary Button Color (No Padding/Size changes) */
+/* ============================================
+   OPTIONAL: Primary Button Color
+   (Tell me if you want this removed)
+   ============================================ */
 .btn-primary {
     background: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
     border: none !important;
     color: white !important;
 }
 
-/* Scrollbar Colors (Visual only, no width changes if possible, but webkit requires width) */
-::-webkit-scrollbar {
-    width: 10px;
-}
 
+/* ============================================
+   OPTIONAL: Scrollbar COLOR ONLY
+   ============================================ */
 ::-webkit-scrollbar-thumb {
     background: linear-gradient(135deg, #1e3c72 0%, #4facfe 100%);
-    border-radius: 5px;
 }
