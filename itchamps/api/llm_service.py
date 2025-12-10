@@ -134,7 +134,7 @@ class LLMService:
 
             # 1. First Call to Claude
             response = client.messages.create(
-                model="claude-sonnet-4",
+                model="claude-3-haiku-20240307",
                 max_tokens=1024,
                 system=system_prompt,
                 messages=messages,
@@ -165,7 +165,7 @@ class LLMService:
                 
                 # 3. Get Final Response with Data
                 final_response = client.messages.create(
-                    model="claude-sonnet-4",
+                    model="claude-3-haiku-20240307",
                     max_tokens=1024,
                     system=system_prompt,
                     messages=messages,
