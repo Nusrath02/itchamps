@@ -19,7 +19,7 @@ header.navbar {
 }
 
 /* SIDEBAR COLORS */
-.layout-side-section {
+/* .layout-side-section {
     background: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
     color: #000000 !important;
 }
@@ -48,7 +48,7 @@ header.navbar {
 
 .desk-sidebar .sidebar-item-icon,
 .standard-sidebar-item .sidebar-item-icon {
-    color: rgba(255, 255, 255, 0.95) !important;
+    color: rgba(255, 255, 255, 0.95) !important; */
 }
 
 /* BRAND LOGO: keep only background image reference (no sizing/position overrides) */
@@ -59,14 +59,14 @@ header.navbar {
 }
 
 /* OPTIONAL: Primary button color — remove if you don't want buttons changed */
-.btn-primary {
+/* .btn-primary {
     background: linear-gradient(90deg, #007de9 0%, #00d4c5 100%) !important;
     border: none !important;
     color: #000000 !important;
-}
+} */
 
 /* Small cosmetic scrollbar thumb color only (no size/layout changes) */
-::-webkit-scrollbar-thumb {
+/* ::-webkit-scrollbar-thumb {
     background: linear-gradient(135deg, #1e3c72 0%, #4facfe 100%);
     border-radius: 5px;
-}
+} */
