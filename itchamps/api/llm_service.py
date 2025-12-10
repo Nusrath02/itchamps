@@ -58,8 +58,10 @@ class LLMService:
 
     @staticmethod
     def execute_tool(tool_name, tool_args, context):
-        employee_id = context.get('employee', {}).get('name') if context.get('employee') else None
-        user_id = context.get('user', {}).get('id')
+        # Safely get employee and user info from context
+        employee = context.get('employee') if context else None
+        employee_id = employee.get('id') if employee else None
+        user_id = context.get('user', {}).get('id') if context else None
         
         if tool_name == "get_leave_balance":
             # Use the verified employee_id from context/args
@@ -114,9 +116,14 @@ class LLMService:
             tools = LLMService.get_tools()
             
             # System Prompt
+            user_name = context.get('user', {}).get('full_name', 'User') if context else 'User'
+            user_id = context.get('user', {}).get('id', 'unknown') if context else 'unknown'
+            employee = context.get('employee') if context else None
+            employee_id = employee.get('id') if employee else 'Not Linked'
+            
             system_prompt = f"""You are a helpful HR Assistant for ITChamps.
-            Current User: {context.get('user', {}).get('full_name')} ({context.get('user', {}).get('id')})
-            Linked Employee ID: {context.get('employee', {}).get('name')}
+            Current User: {user_name} ({user_id})
+            Linked Employee ID: {employee_id}
             
             Use the available tools to answer queries about leaves, profiles, and employees.
             If you cannot answer using a tool, politely explain why.
