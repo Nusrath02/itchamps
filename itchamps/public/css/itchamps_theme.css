@@ -57,6 +57,18 @@ header.navbar {
     background: url('/assets/itchamps/images/itchamps_iemp.png') no-repeat center;
     background-size: contain;
 }
+/* hide chatbot on login (fallback) */
+body.login-page .chatbot,
+body.page-login .chatbot,
+body.login .chatbot,
+#login .chatbot,
+#chatbot.login,
+#chatbot.login-page,
+.chat-launcher.login,
+[data-route="#login"] .chatbot {
+  display: none !important;
+}
+
 
 /* OPTIONAL: Primary button color — remove if you don't want buttons changed */
 /* .btn-primary {
