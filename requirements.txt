@@ -3,3 +3,6 @@
 
 # GitHub API integration
 requests>=2.31.0
+
+# AI/LLM Integration (for chatbot)
+anthropic>=0.18.0
