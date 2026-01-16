@@ -1,35 +1,14 @@
-
-/* itchamps/public/css/itchamps.css */
-
-/* 1. Dark Sidebar Background */
-.layout-side-section {
-    background-color: #1e232e !important;
-    color: #a6b0cf !important;
-    border-right: none !important;
-}
-
-/* 2. Sidebar Links */
-.sidebar-item-anchor {
-    color: #a6b0cf !important;
-    font-weight: 500;
-    padding: 10px 15px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
-
-.sidebar-item-anchor:hover {
-    color: #ffffff !important;
-    background-color: #2a3042 !important;
-}
-
-/* 3. Active Menu Item (Highlighted) */
-.sidebar-item-anchor.active {
-    background-color: #343a40 !important; /* Darker highlight */
-    color: #ffffff !important;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
-}
-
-/* 4. Logo Area */
-.app-logo {
-    filter: brightness(0) invert(1); /* Makes black logos white */
+.navbar-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 20px 10px 20px;
+    box-sizing: border-box;
+    height: 52px;
+    position: sticky;
+    top: 0px;
+    z-index: 1030;
+    background: #006fde;
 }
