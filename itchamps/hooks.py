@@ -24,13 +24,15 @@ app_logo_url = "/assets/itchamps/images/itchamps_iemp.png"
 # Includes in <head>
 app_include_css = [
     f"/assets/itchamps/css/itchamps_theme.css?v={app_version}",  # Theme first
-    f"/assets/itchamps/css/chatbot.css?v={app_version}"          # Chatbot second
+    f"/assets/itchamps/css/chatbot.css?v={app_version}",          # Chatbot second
+    f"/assets/itchamps/css/sidebar_navigation.css?v={app_version}",
 ]
 
 app_include_js = [
     f"/assets/itchamps/js/chatbot_ui.js?v={app_version}",
     f"/assets/itchamps/js/chatbot.js?v={app_version}",
-    f"/assets/itchamps/js/hide_chat_on_login.js?v={app_version}"
+    f"/assets/itchamps/js/hide_chat_on_login.js?v={app_version}",
+    f"/assets/itchamps/js/sidebar_navigation_enhanced.js?v={app_version}",
 ]
 
 # Make sure our JS and CSS loads on web pages too
