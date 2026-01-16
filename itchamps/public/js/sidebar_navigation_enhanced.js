@@ -1,480 +1,326 @@
-/* ==================== ITCHAMPS ENHANCED SIDEBAR NAVIGATION JS - FIXED ==================== */
+/* ==================== ITCHAMPS SIDEBAR - COMPLETE FIX ==================== */
 
 (function() {
     'use strict';
     
-    // Initialize when DOM is ready
-    $(document).ready(function() {
-        initSidebarOnLoad();
-    });
-
-    // Also initialize on frappe ready
-    frappe.ready(function() {
-        initSidebarOnLoad();
-    });
-
-    // Initialize on page load and route changes
-    $(document).on('frappe:ready page-change', function() {
-        initSidebarOnLoad();
-    });
-
-    function initSidebarOnLoad() {
-        // Add a small delay to ensure DOM is fully loaded
-        setTimeout(function() {
-            if (!$('.custom-workspace-sidebar').length) {
-                console.log('Initializing ITChamps Sidebar...');
-                initEnhancedWorkspaceSidebar();
-            }
-        }, 500);
-    }
-
-    function initEnhancedWorkspaceSidebar() {
-        // Create the sidebar structure
-        createEnhancedSidebar();
-        attachEnhancedSidebarEvents();
-        loadWorkspaceData();
+    console.log('ITChamps Sidebar Module Loading...');
+    
+    // Initialize when everything is ready
+    function initWhenReady() {
+        if (typeof frappe === 'undefined' || typeof $ === 'undefined') {
+            console.log('Waiting for frappe and jQuery...');
+            setTimeout(initWhenReady, 500);
+            return;
+        }
         
-        // Hide default workspace display
-        hideDefaultWorkspaceGrid();
+        console.log('Starting sidebar initialization...');
+        createSidebar();
+        hideDefaultWorkspace();
+        attachEvents();
     }
-
-    function hideDefaultWorkspaceGrid() {
-        // Force hide default workspace elements
-        $('.workspace-list, .codex-editor, .standard-sidebar-section').hide();
-        $('body').addClass('custom-sidebar-active');
+    
+    // Start initialization
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initWhenReady);
+    } else {
+        initWhenReady();
     }
-
-    function createEnhancedSidebar() {
-        // Remove existing sidebar if any
+    
+    // Also re-init on page changes
+    $(document).on('page-change', function() {
+        if (!$('.custom-workspace-sidebar').length) {
+            initWhenReady();
+        }
+        hideDefaultWorkspace();
+    });
+    
+    function hideDefaultWorkspace() {
+        // Aggressively hide all default workspace elements
+        setTimeout(function() {
+            $('.workspace-list, .codex-editor, .standard-sidebar-section').hide();
+            $('.workspace .page-content .workspace-list').hide();
+            $('.desk-page .workspace-list').hide();
+            console.log('Hidden default workspace elements');
+        }, 100);
+    }
+    
+    function createSidebar() {
+        // Remove existing
         $('.custom-workspace-sidebar, .sidebar-toggle-btn').remove();
-
+        
+        const workspaces = getWorkspaceList();
+        
+        let menuHtml = '';
+        workspaces.forEach(function(ws) {
+            menuHtml += `
+                <div class="sidebar-menu-item" data-workspace="${ws.name}">
+                    <div class="sidebar-menu-link">
+                        <span class="sidebar-menu-icon">${ws.icon}</span>
+                        <span class="sidebar-menu-text">${ws.title}</span>
+                        <span class="sidebar-menu-arrow">▶</span>
+                    </div>
+                    <div class="sidebar-submenu">
+                        ${renderSubmenuItems(ws.items)}
+                    </div>
+                </div>
+            `;
+        });
+        
         const sidebarHtml = `
             <div class="custom-workspace-sidebar">
                 <div class="sidebar-header">
                     <h3>🏢 Workspaces</h3>
                 </div>
-                <div class="sidebar-menu" id="workspace-sidebar-menu">
-                    <div class="sidebar-loading">
-                        <div class="loading-spinner"></div>
-                        <p>Loading workspaces...</p>
-                    </div>
+                <div class="sidebar-menu">
+                    ${menuHtml}
                 </div>
             </div>
             <button class="sidebar-toggle-btn" title="Toggle Sidebar">
                 <span class="toggle-icon">◀</span>
             </button>
         `;
-
+        
         $('body').append(sidebarHtml);
-        console.log('Sidebar HTML created');
+        console.log('Sidebar created with', workspaces.length, 'workspaces');
     }
-
-    function loadWorkspaceData() {
-        // Try to get workspaces from Frappe API
-        if (typeof frappe !== 'undefined' && frappe.call) {
-            frappe.call({
-                method: 'frappe.desk.desktop.get_workspace_sidebar_items',
-                callback: function(r) {
-                    if (r.message && r.message.pages) {
-                        console.log('Loaded workspaces from API:', r.message.pages.length);
-                        renderWorkspaces(r.message.pages);
-                    } else {
-                        console.log('API response empty, using defaults');
-                        renderDefaultWorkspaces();
-                    }
-                },
-                error: function(err) {
-                    console.log('API error, using defaults:', err);
-                    renderDefaultWorkspaces();
-                }
-            });
-        } else {
-            console.log('Frappe not available, using defaults');
-            renderDefaultWorkspaces();
+    
+    function renderSubmenuItems(items) {
+        if (!items || items.length === 0) {
+            return '<div class="submenu-empty">No items</div>';
         }
-    }
-
-    function renderWorkspaces(workspaces) {
-        const $menu = $('#workspace-sidebar-menu');
-        $menu.empty();
-
-        const currentRoute = window.location.pathname;
-
-        workspaces.forEach(function(workspace) {
-            if (workspace.public !== 0) {
-                const menuItem = createWorkspaceMenuItem(workspace, currentRoute);
-                $menu.append(menuItem);
-            }
+        
+        let html = '';
+        items.forEach(function(item) {
+            html += `
+                <a href="${item.route}" class="sidebar-submenu-link" data-route="${item.route}">
+                    <span class="sidebar-submenu-icon">${item.icon}</span>
+                    ${item.label}
+                </a>
+            `;
         });
-
-        console.log('Rendered', workspaces.length, 'workspaces');
-    }
-
-    function createWorkspaceMenuItem(workspace, currentRoute) {
-        const isActive = currentRoute.includes(workspace.name.toLowerCase().replace(/ /g, '-'));
-        const icon = getWorkspaceIcon(workspace.title || workspace.name);
         
-        const $item = $(`
-            <div class="sidebar-menu-item" data-workspace="${workspace.name}">
-                <div class="sidebar-menu-link ${isActive ? 'active' : ''}">
-                    <span class="sidebar-menu-icon">${icon}</span>
-                    <span class="sidebar-menu-text">${workspace.title || workspace.name}</span>
-                    <span class="sidebar-menu-arrow">▶</span>
-                </div>
-                <div class="sidebar-submenu">
-                    <div class="submenu-loading">Loading...</div>
-                </div>
-            </div>
-        `);
-
-        return $item;
+        return html;
     }
-
-    function getWorkspaceIcon(workspaceName) {
-        const icons = {
-            'Framework': '⚙️',
-            'Accounts': '💰',
-            'Assets': '🏭',
-            'Buying': '🛒',
-            'Manufacturing': '🏭',
-            'Projects': '📊',
-            'Quality': '✅',
-            'Selling': '💼',
-            'Stock': '📦',
-            'Subcontracting': '🔄',
-            'ERPNext Settings': '⚙️',
-            'Frappe HR': '👥',
-            'HR': '👥',
-            'CRM': '📞',
-            'Support': '🎧',
-            'Website': '🌐',
-            'Payroll': '💵'
-        };
-
-        return icons[workspaceName] || '📁';
-    }
-
-    function loadWorkspaceSubmenu($menuItem, workspaceName) {
-        const $submenu = $menuItem.find('.sidebar-submenu');
-        
-        // Check if already loaded
-        if ($submenu.find('.sidebar-submenu-link').length > 0) {
-            return;
-        }
-
-        // Load workspace page data
-        if (typeof frappe !== 'undefined' && frappe.call) {
-            frappe.call({
-                method: 'frappe.desk.desktop.get_desktop_page',
-                args: {
-                    page: workspaceName
-                },
-                callback: function(r) {
-                    if (r.message) {
-                        renderSubmenu($submenu, r.message, workspaceName);
-                    } else {
-                        $submenu.html('<div class="submenu-empty">No items available</div>');
-                    }
-                },
-                error: function() {
-                    $submenu.html('<div class="submenu-error">Could not load menu</div>');
-                }
-            });
-        }
-    }
-
-    function renderSubmenu($submenu, pageData, workspaceName) {
-        $submenu.empty();
-        let itemCount = 0;
-
-        // Get shortcuts
-        if (pageData.shortcuts && pageData.shortcuts.items) {
-            pageData.shortcuts.items.forEach(function(shortcut) {
-                if (shortcut.link_to) {
-                    addSubmenuItem($submenu, shortcut.label, shortcut.link_to, shortcut.type);
-                    itemCount++;
-                }
-            });
-        }
-
-        // Get links
-        if (pageData.links && pageData.links.items) {
-            pageData.links.items.forEach(function(link) {
-                if (link.link_to) {
-                    addSubmenuItem($submenu, link.label, link.link_to, link.type);
-                    itemCount++;
-                }
-            });
-        }
-
-        // If no items found, show message
-        if (itemCount === 0) {
-            $submenu.html('<div class="submenu-empty">No menu items</div>');
-        }
-
-        console.log('Loaded', itemCount, 'items for', workspaceName);
-    }
-
-    function addSubmenuItem($submenu, label, linkTo, type) {
-        let route = '';
-        
-        // Build proper route
-        if (linkTo.includes('List/')) {
-            const doctype = linkTo.split('List/')[1];
-            route = '/app/' + doctype.toLowerCase().replace(/ /g, '-');
-        } else if (linkTo.includes('Form/')) {
-            const parts = linkTo.split('Form/')[1].split('/');
-            route = '/app/' + parts[0].toLowerCase().replace(/ /g, '-');
-        } else if (linkTo.includes('/app/')) {
-            route = linkTo;
-        } else {
-            route = '/app/' + linkTo.toLowerCase().replace(/ /g, '-');
-        }
-
-        const icon = getSubmenuIcon(type);
-
-        const $link = $(`
-            <a href="${route}" class="sidebar-submenu-link">
-                <span class="sidebar-submenu-icon">${icon}</span>
-                ${label}
-            </a>
-        `);
-
-        $submenu.append($link);
-    }
-
-    function getSubmenuIcon(type) {
-        const icons = {
-            'DocType': '📄',
-            'Report': '📊',
-            'Page': '📃',
-            'Dashboard': '📈',
-            'List': '📋'
-        };
-        return icons[type] || '📎';
-    }
-
-    function renderDefaultWorkspaces() {
-        const defaultWorkspaces = [
+    
+    function getWorkspaceList() {
+        return [
             {
                 name: 'Framework',
                 title: 'Framework',
-                submenus: [
-                    { label: 'User', route: '/app/user' },
-                    { label: 'Role', route: '/app/role' },
-                    { label: 'Module Def', route: '/app/module-def' },
-                    { label: 'Workspace', route: '/app/workspace' }
+                icon: '⚙️',
+                items: [
+                    { label: 'Automation', route: '/app/automation', icon: '🤖' },
+                    { label: 'Build', route: '/app/build', icon: '🏗️' },
+                    { label: 'Data', route: '/app/data', icon: '💾' },
+                    { label: 'Email', route: '/app/email', icon: '✉️' },
+                    { label: 'Integrations', route: '/app/integrations', icon: '🔌' },
+                    { label: 'Printing', route: '/app/printing', icon: '🖨️' },
+                    { label: 'System', route: '/app/system', icon: '⚙️' },
+                    { label: 'Users', route: '/app/user', icon: '👤' },
+                    { label: 'Website', route: '/app/website', icon: '🌐' },
+                    { label: 'Role', route: '/app/role', icon: '🔑' },
+                    { label: 'Module Def', route: '/app/module-def', icon: '📦' },
+                    { label: 'Workspace', route: '/app/workspace', icon: '🏢' }
                 ]
             },
             {
                 name: 'Accounts',
                 title: 'Accounts',
-                submenus: [
-                    { label: 'Chart of Accounts', route: '/app/chart-of-accounts' },
-                    { label: 'Journal Entry', route: '/app/journal-entry' },
-                    { label: 'Sales Invoice', route: '/app/sales-invoice' },
-                    { label: 'Purchase Invoice', route: '/app/purchase-invoice' },
-                    { label: 'Payment Entry', route: '/app/payment-entry' }
+                icon: '💰',
+                items: [
+                    { label: 'Financial Reports', route: '/app/financial-reports', icon: '📊' },
+                    { label: 'Accounting', route: '/app/accounting', icon: '💰' },
+                    { label: 'Taxes', route: '/app/taxes', icon: '💵' },
+                    { label: 'Budget', route: '/app/budget', icon: '💼' },
+                    { label: 'Banking', route: '/app/banking', icon: '🏦' },
+                    { label: 'Share Management', route: '/app/share-management', icon: '📈' },
+                    { label: 'Subscription', route: '/app/subscription', icon: '🔄' },
+                    { label: 'Chart of Accounts', route: '/app/chart-of-accounts', icon: '📊' },
+                    { label: 'Journal Entry', route: '/app/journal-entry', icon: '📝' },
+                    { label: 'Sales Invoice', route: '/app/sales-invoice', icon: '🧾' },
+                    { label: 'Purchase Invoice', route: '/app/purchase-invoice', icon: '📄' },
+                    { label: 'Payment Entry', route: '/app/payment-entry', icon: '💳' }
                 ]
             },
             {
                 name: 'Assets',
                 title: 'Assets',
-                submenus: [
-                    { label: 'Asset', route: '/app/asset' },
-                    { label: 'Asset Category', route: '/app/asset-category' },
-                    { label: 'Asset Movement', route: '/app/asset-movement' }
+                icon: '🏭',
+                items: [
+                    { label: 'Asset', route: '/app/asset', icon: '🏗️' },
+                    { label: 'Location', route: '/app/location', icon: '📍' },
+                    { label: 'Asset Category', route: '/app/asset-category', icon: '📁' },
+                    { label: 'Asset Movement', route: '/app/asset-movement', icon: '🚚' },
+                    { label: 'Asset Maintenance', route: '/app/asset-maintenance', icon: '🔧' },
+                    { label: 'Asset Repair', route: '/app/asset-repair', icon: '🛠️' },
+                    { label: 'Asset Capitalization', route: '/app/asset-capitalization', icon: '💰' }
                 ]
             },
             {
                 name: 'Buying',
                 title: 'Buying',
-                submenus: [
-                    { label: 'Supplier', route: '/app/supplier' },
-                    { label: 'Purchase Order', route: '/app/purchase-order' },
-                    { label: 'Request for Quotation', route: '/app/request-for-quotation' }
+                icon: '🛒',
+                items: [
+                    { label: 'Supplier', route: '/app/supplier', icon: '🏪' },
+                    { label: 'Purchase Order', route: '/app/purchase-order', icon: '📋' },
+                    { label: 'Material Request', route: '/app/material-request', icon: '📝' },
+                    { label: 'Request for Quotation', route: '/app/request-for-quotation', icon: '❓' },
+                    { label: 'Supplier Quotation', route: '/app/supplier-quotation', icon: '💬' },
+                    { label: 'Purchase Invoice', route: '/app/purchase-invoice', icon: '📄' }
                 ]
             },
             {
                 name: 'Manufacturing',
                 title: 'Manufacturing',
-                submenus: [
-                    { label: 'Work Order', route: '/app/work-order' },
-                    { label: 'BOM', route: '/app/bom' },
-                    { label: 'Production Plan', route: '/app/production-plan' }
+                icon: '🏭',
+                items: [
+                    { label: 'Work Order', route: '/app/work-order', icon: '⚙️' },
+                    { label: 'BOM', route: '/app/bom', icon: '📃' },
+                    { label: 'Production Plan', route: '/app/production-plan', icon: '📅' },
+                    { label: 'Job Card', route: '/app/job-card', icon: '🎫' },
+                    { label: 'Stock Entry', route: '/app/stock-entry', icon: '📦' }
                 ]
             },
             {
                 name: 'Projects',
                 title: 'Projects',
-                submenus: [
-                    { label: 'Project', route: '/app/project' },
-                    { label: 'Task', route: '/app/task' },
-                    { label: 'Timesheet', route: '/app/timesheet' }
+                icon: '📊',
+                items: [
+                    { label: 'Project', route: '/app/project', icon: '📁' },
+                    { label: 'Task', route: '/app/task', icon: '✅' },
+                    { label: 'Timesheet', route: '/app/timesheet', icon: '⏱️' },
+                    { label: 'Project Template', route: '/app/project-template', icon: '📋' }
                 ]
             },
             {
                 name: 'Quality',
                 title: 'Quality',
-                submenus: [
-                    { label: 'Quality Inspection', route: '/app/quality-inspection' },
-                    { label: 'Quality Goal', route: '/app/quality-goal' }
+                icon: '✅',
+                items: [
+                    { label: 'Quality Inspection', route: '/app/quality-inspection', icon: '🔍' },
+                    { label: 'Quality Goal', route: '/app/quality-goal', icon: '🎯' },
+                    { label: 'Quality Review', route: '/app/quality-review', icon: '⭐' },
+                    { label: 'Quality Action', route: '/app/quality-action', icon: '✔️' },
+                    { label: 'Non Conformance', route: '/app/non-conformance', icon: '⚠️' },
+                    { label: 'Quality Feedback', route: '/app/quality-feedback', icon: '💬' },
+                    { label: 'Quality Meeting', route: '/app/quality-meeting', icon: '👥' },
+                    { label: 'Quality Procedure', route: '/app/quality-procedure', icon: '📝' }
                 ]
             },
             {
                 name: 'Selling',
                 title: 'Selling',
-                submenus: [
-                    { label: 'Customer', route: '/app/customer' },
-                    { label: 'Sales Order', route: '/app/sales-order' },
-                    { label: 'Quotation', route: '/app/quotation' }
+                icon: '💼',
+                items: [
+                    { label: 'Customer', route: '/app/customer', icon: '👥' },
+                    { label: 'Sales Order', route: '/app/sales-order', icon: '📄' },
+                    { label: 'Quotation', route: '/app/quotation', icon: '💬' },
+                    { label: 'Sales Partner', route: '/app/sales-partner', icon: '🤝' },
+                    { label: 'Sales Invoice', route: '/app/sales-invoice', icon: '🧾' }
                 ]
             },
             {
                 name: 'Stock',
                 title: 'Stock',
-                submenus: [
-                    { label: 'Item', route: '/app/item' },
-                    { label: 'Stock Entry', route: '/app/stock-entry' },
-                    { label: 'Delivery Note', route: '/app/delivery-note' }
+                icon: '📦',
+                items: [
+                    { label: 'Item', route: '/app/item', icon: '🏷️' },
+                    { label: 'Stock Entry', route: '/app/stock-entry', icon: '📝' },
+                    { label: 'Delivery Note', route: '/app/delivery-note', icon: '🚚' },
+                    { label: 'Purchase Receipt', route: '/app/purchase-receipt', icon: '📥' },
+                    { label: 'Material Request', route: '/app/material-request', icon: '📋' },
+                    { label: 'Pick List', route: '/app/pick-list', icon: '📃' }
                 ]
             },
             {
                 name: 'Subcontracting',
                 title: 'Subcontracting',
-                submenus: [
-                    { label: 'Subcontracting Order', route: '/app/subcontracting-order' }
+                icon: '🔄',
+                items: [
+                    { label: 'Subcontracting BOM', route: '/app/subcontracting-bom', icon: '📋' },
+                    { label: 'Subcontracting Order', route: '/app/subcontracting-order', icon: '📄' },
+                    { label: 'Subcontracting Receipt', route: '/app/subcontracting-receipt', icon: '📦' }
                 ]
             },
             {
                 name: 'ERPNext Settings',
                 title: 'ERPNext Settings',
-                submenus: [
-                    { label: 'Company', route: '/app/company' },
-                    { label: 'Fiscal Year', route: '/app/fiscal-year' }
+                icon: '⚙️',
+                items: [
+                    { label: 'Global Defaults', route: '/app/global-defaults', icon: '🌐' },
+                    { label: 'System Settings', route: '/app/system-settings', icon: '⚙️' },
+                    { label: 'Accounts Settings', route: '/app/accounts-settings', icon: '💰' },
+                    { label: 'POS Settings', route: '/app/pos-settings', icon: '🏪' },
+                    { label: 'Selling Settings', route: '/app/selling-settings', icon: '💼' },
+                    { label: 'Buying Settings', route: '/app/buying-settings', icon: '🛒' },
+                    { label: 'Stock Settings', route: '/app/stock-settings', icon: '📦' },
+                    { label: 'Manufacturing Settings', route: '/app/manufacturing-settings', icon: '🏭' },
+                    { label: 'Company', route: '/app/company', icon: '🏢' },
+                    { label: 'Fiscal Year', route: '/app/fiscal-year', icon: '📅' },
+                    { label: 'Territory', route: '/app/territory', icon: '🗺️' },
+                    { label: 'Brand', route: '/app/brand', icon: '🏷️' }
                 ]
             },
             {
                 name: 'Frappe HR',
                 title: 'Frappe HR',
-                submenus: [
-                    { label: 'Employee', route: '/app/employee' },
-                    { label: 'Attendance', route: '/app/attendance' },
-                    { label: 'Leave Application', route: '/app/leave-application' }
+                icon: '👥',
+                items: [
+                    { label: 'Home', route: '/app/home', icon: '🏠' },
+                    { label: 'Build', route: '/app/build', icon: '🏗️' },
+                    { label: 'People', route: '/app/people', icon: '👥' },
+                    { label: 'Tenure', route: '/app/tenure', icon: '📅' },
+                    { label: 'Accounting', route: '/app/accounting', icon: '💰' },
+                    { label: 'Recruitment', route: '/app/recruitment', icon: '👔' },
+                    { label: 'Shift & Attendance', route: '/app/shift-attendance', icon: '📋' },
+                    { label: 'Employee', route: '/app/employee', icon: '👤' },
+                    { label: 'Attendance', route: '/app/attendance', icon: '📅' },
+                    { label: 'Leave Application', route: '/app/leave-application', icon: '🏖️' },
+                    { label: 'Salary Structure', route: '/app/salary-structure', icon: '💰' },
+                    { label: 'Payroll Entry', route: '/app/payroll-entry', icon: '💵' }
                 ]
             }
         ];
-
-        const $menu = $('#workspace-sidebar-menu');
-        $menu.empty();
-
-        const currentRoute = window.location.pathname;
-
-        defaultWorkspaces.forEach(function(workspace) {
-            const isActive = currentRoute.includes(workspace.name.toLowerCase().replace(/ /g, '-'));
-            const icon = getWorkspaceIcon(workspace.name);
-            
-            let submenuHtml = '';
-            workspace.submenus.forEach(function(submenu) {
-                submenuHtml += `
-                    <a href="${submenu.route}" class="sidebar-submenu-link">
-                        <span class="sidebar-submenu-icon">📄</span>
-                        ${submenu.label}
-                    </a>
-                `;
-            });
-
-            const $item = $(`
-                <div class="sidebar-menu-item" data-workspace="${workspace.name}">
-                    <div class="sidebar-menu-link ${isActive ? 'active' : ''}">
-                        <span class="sidebar-menu-icon">${icon}</span>
-                        <span class="sidebar-menu-text">${workspace.title}</span>
-                        <span class="sidebar-menu-arrow">▶</span>
-                    </div>
-                    <div class="sidebar-submenu">
-                        ${submenuHtml}
-                    </div>
-                </div>
-            `);
-
-            $menu.append($item);
-        });
-
-        console.log('Rendered default workspaces');
     }
-
-    function attachEnhancedSidebarEvents() {
-        // Remove previous event handlers
-        $(document).off('click', '.sidebar-menu-link');
-        $(document).off('click', '.sidebar-submenu-link');
-        $(document).off('click', '.sidebar-toggle-btn');
-
-        // Toggle submenu
-        $(document).on('click', '.sidebar-menu-link', function(e) {
+    
+    function attachEvents() {
+        // Remove old events
+        $(document).off('click.sidebar');
+        
+        // Toggle submenu - PREVENT NAVIGATION
+        $(document).on('click.sidebar', '.sidebar-menu-link', function(e) {
             e.preventDefault();
             e.stopPropagation();
             
             const $menuItem = $(this).closest('.sidebar-menu-item');
-            const $submenu = $menuItem.find('.sidebar-submenu');
-            const workspaceName = $menuItem.data('workspace');
-
-            // If not expanded and submenu not loaded, load it
-            if (!$menuItem.hasClass('expanded') && $submenu.find('.submenu-loading').length > 0) {
-                loadWorkspaceSubmenu($menuItem, workspaceName);
-            }
-
-            // Toggle expansion
-            $menuItem.toggleClass('expanded');
+            const wasExpanded = $menuItem.hasClass('expanded');
             
-            // Close other menus
-            $('.sidebar-menu-item').not($menuItem).removeClass('expanded');
+            // Close all other menus
+            $('.sidebar-menu-item').removeClass('expanded');
+            
+            // Toggle this menu
+            if (!wasExpanded) {
+                $menuItem.addClass('expanded');
+                console.log('Expanded:', $menuItem.data('workspace'));
+            }
         });
-
-        // Navigate on submenu click
-        $(document).on('click', '.sidebar-submenu-link', function(e) {
+        
+        // Navigate on submenu link click
+        $(document).on('click.sidebar', '.sidebar-submenu-link', function(e) {
             e.preventDefault();
-            const route = $(this).attr('href');
-            
-            if (typeof frappe !== 'undefined' && frappe.set_route) {
-                frappe.set_route(route);
-            } else {
-                window.location.href = route;
-            }
-            
-            markActiveMenu();
+            const route = $(this).data('route');
+            console.log('Navigating to:', route);
+            frappe.set_route(route);
         });
-
+        
         // Toggle sidebar collapse
-        $(document).on('click', '.sidebar-toggle-btn', function() {
+        $(document).on('click.sidebar', '.sidebar-toggle-btn', function() {
             $('body').toggleClass('sidebar-collapsed');
             const $icon = $(this).find('.toggle-icon');
-            
-            if ($('body').hasClass('sidebar-collapsed')) {
-                $icon.text('▶');
-            } else {
-                $icon.text('◀');
-            }
+            $icon.text($('body').hasClass('sidebar-collapsed') ? '▶' : '◀');
         });
-
+        
         console.log('Sidebar events attached');
     }
-
-    function markActiveMenu() {
-        const currentPath = window.location.pathname;
-        
-        // Remove all active classes
-        $('.sidebar-menu-link').removeClass('active');
-        $('.sidebar-submenu-link').removeClass('active');
-
-        // Mark active submenu
-        $('.sidebar-submenu-link').each(function() {
-            const route = $(this).attr('href');
-            if (currentPath.includes(route)) {
-                $(this).addClass('active');
-                $(this).closest('.sidebar-menu-item').addClass('expanded');
-                $(this).closest('.sidebar-menu-item').find('.sidebar-menu-link').addClass('active');
-            }
-        });
-    }
-
+    
 })();
