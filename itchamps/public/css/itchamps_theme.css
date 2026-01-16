@@ -1,42 +1,16 @@
 /* ==================== ITCHAMPS THEME CSS ==================== */
 /*
- * This file has been cleared to prevent CSS conflicts with Frappe UI.
- *
- * Previous functionality moved to:
- * - Brand logo: Handled via hooks.py (brand_html and app_logo_url)
- * - Hide chatbot on login: Moved to chatbot.css (lines 365-380)
- *
- * If you need custom theme styles in the future, add them here carefully
- * to avoid affecting Frappe's default layout and alignments.
+ * Enhanced theme with sidebar navigation support
  */
 
-/* ==================== CUSTOM DESK THEME ==================== */
+/* ==================== NAVBAR STYLING ==================== */
 
-/* Sidebar Styling */
-.desk-sidebar {
-    background: linear-gradient(180deg, #1e3c72 0%, #2a5298 100%) !important;
-}
-
-.desk-sidebar .desk-sidebar-item {
-    color: rgba(255, 255, 255, 0.9) !important;
-}
-
-.desk-sidebar .desk-sidebar-item:hover {
-    background: rgba(255, 255, 255, 0.1) !important;
-    color: white !important;
-}
-
-.desk-sidebar .desk-sidebar-item.selected {
-    background: rgba(255, 255, 255, 0.15) !important;
-    color: white !important;
-    border-left: 3px solid #4facfe !important;
-}
-
-/* Navbar Styling */
+/* Navbar */
 .navbar {
     background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%) !important;
     border-bottom: none !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    height: 60px !important;
 }
 
 .navbar .navbar-home {
@@ -67,6 +41,30 @@
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important;
 }
 
+/* Navbar buttons and icons */
+.navbar .navbar-nav .nav-link {
+    color: white !important;
+}
+
+.navbar .navbar-nav .nav-link:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 8px !important;
+}
+
+/* ==================== WORKSPACE GRID HIDING ==================== */
+
+/* Hide the default workspace grid when sidebar is active */
+.layout-main .layout-side-section,
+.layout-main .standard-sidebar-section {
+    display: none !important;
+}
+
+.codex-editor__redactor {
+    padding-bottom: 0 !important;
+}
+
+/* ==================== CARDS AND CONTAINERS ==================== */
+
 /* Workspace Cards */
 .workspace-card,
 .shortcut-widget-box {
@@ -91,6 +89,16 @@
     border-radius: 12px !important;
 }
 
+/* Cards and Containers */
+.frappe-card,
+.widget {
+    border-radius: 12px !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* ==================== BUTTONS ==================== */
+
 /* Primary Buttons */
 .btn-primary {
     background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%) !important;
@@ -105,6 +113,12 @@
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4) !important;
 }
 
+.btn-secondary {
+    border-radius: 8px !important;
+}
+
+/* ==================== PAGE HEADERS ==================== */
+
 /* Page Headers */
 .page-head {
     background: white !important;
@@ -117,19 +131,19 @@
     font-weight: 600 !important;
 }
 
-/* Cards and Containers */
-.frappe-card,
-.widget {
-    border-radius: 12px !important;
-    border: 1px solid #e5e7eb !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
-}
+/* ==================== FORMS ==================== */
 
 /* Form Controls */
 .form-control:focus {
     border-color: #3b82f6 !important;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
 }
+
+.form-control {
+    border-radius: 8px !important;
+}
+
+/* ==================== LINKS AND NAVIGATION ==================== */
 
 /* Links */
 a {
@@ -146,15 +160,30 @@ a:hover {
     border-bottom: 2px solid #2563eb !important;
 }
 
+/* ==================== BADGES AND INDICATORS ==================== */
+
 /* Badges */
 .badge-primary {
     background: #2563eb !important;
 }
 
+/* Custom Accent Colors */
+.indicator.blue::before {
+    background-color: #2563eb !important;
+}
+
+.indicator-pill.blue,
+.text-primary {
+    color: #2563eb !important;
+}
+
+/* ==================== LIST VIEWS ==================== */
+
 /* List View Enhancements */
 .list-row {
     border-radius: 8px !important;
     margin-bottom: 4px !important;
+    transition: all 0.2s !important;
 }
 
 .list-row:hover {
@@ -165,21 +194,15 @@ a:hover {
     accent-color: #2563eb !important;
 }
 
+/* ==================== DASHBOARD ==================== */
+
 /* Dashboard Charts */
 .chart-container {
     border-radius: 12px !important;
     overflow: hidden !important;
 }
 
-/* Success/Info/Warning Colors */
-.indicator-pill.blue,
-.text-primary {
-    color: #2563eb !important;
-}
-
-.btn-secondary {
-    border-radius: 8px !important;
-}
+/* ==================== MODALS ==================== */
 
 /* Modal Styling */
 .modal-content {
@@ -194,12 +217,20 @@ a:hover {
     border-radius: 16px 16px 0 0 !important;
 }
 
+.modal-title {
+    color: white !important;
+}
+
+/* ==================== DROPDOWNS ==================== */
+
 /* Dropdown Menus */
 .dropdown-menu {
     border-radius: 12px !important;
     border: 1px solid #e5e7eb !important;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
 }
+
+/* ==================== SCROLLBARS ==================== */
 
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
@@ -220,6 +251,8 @@ a:hover {
     background: #a0aec0 !important;
 }
 
+/* ==================== WORKSPACE ENHANCEMENTS ==================== */
+
 /* Workspace Shortcuts Enhancement */
 .shortcut-widget-box .widget-head {
     padding: 16px !important;
@@ -235,9 +268,8 @@ a:hover {
     background: #f9fafb !important;
 }
 
-/* Custom Accent Colors */
-.indicator.blue::before {
-    background-color: #2563eb !important;
+.layout-main-section {
+    background: #f9fafb !important;
 }
 
 /* Enhancement for Module Grid */
@@ -247,4 +279,77 @@ a:hover {
 
 .modules-container .module-link-container:hover {
     transform: translateY(-4px) !important;
+}
+
+/* ==================== TABLES ==================== */
+
+/* Table Styling */
+.table {
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
+.table thead {
+    background: #f9fafb !important;
+}
+
+.table thead th {
+    color: #1e3c72 !important;
+    font-weight: 600 !important;
+    border-bottom: 2px solid #e5e7eb !important;
+}
+
+/* ==================== ALERTS ==================== */
+
+/* Alert Styling */
+.alert {
+    border-radius: 12px !important;
+    border: none !important;
+}
+
+.alert-primary {
+    background: #eff6ff !important;
+    color: #1e40af !important;
+}
+
+.alert-success {
+    background: #f0fdf4 !important;
+    color: #166534 !important;
+}
+
+.alert-warning {
+    background: #fffbeb !important;
+    color: #92400e !important;
+}
+
+.alert-danger {
+    background: #fef2f2 !important;
+    color: #991b1b !important;
+}
+
+/* ==================== FILTERS AND SIDEBAR ==================== */
+
+/* Filter Section */
+.filter-section {
+    background: white !important;
+    border-radius: 12px !important;
+    padding: 16px !important;
+    margin-bottom: 16px !important;
+}
+
+/* ==================== PRINT VIEW ==================== */
+
+/* Clean print view */
+@media print {
+    .custom-workspace-sidebar,
+    .sidebar-toggle-btn,
+    .navbar,
+    .chatbot-float-btn {
+        display: none !important;
+    }
+    
+    .page-container,
+    .workspace-body {
+        margin-left: 0 !important;
+    }
 }
